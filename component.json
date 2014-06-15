@@ -1,0 +1,22 @@
+{
+  "name"          : "backbone.linear",
+  "version"       : "0.1.0",
+  "description"   : "Easiest way to work with your Backbone.Model nested array-object attributes.",
+  "keywords"      : [
+    "backbone",
+    "nested",
+    "linear",
+    "object",
+    "array",
+    "delimiter",
+    "flat",
+    "json",
+    "flatten",
+    "unflatten",
+    "split"
+  ],
+  "repo"          : "darrrk/backbone.linear",
+  "main"          : "backbone.linear.js",
+  "scripts"       : ["backbone.linear.js"],
+  "license"       : "MIT"
+}
