@@ -12,7 +12,7 @@
     "backbone",
     "nested",
     "linear",
-    "object"
+    "object",
     "array",
     "delimiter",
     "flat",
