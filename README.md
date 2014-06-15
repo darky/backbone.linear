@@ -59,7 +59,7 @@ Then you save it back to server, it transforms backward to:
             }
     }
     
-`Backbone.Linear` use as engine [flat](/hughsk/flat) inside.
+`Backbone.Linear` use as engine [flat](//github.com/hughsk/flat) inside.
 If you want to rewrite default flat options, simply define `flat_options` object in your `Backbone.Linear_Model` class.
 
 ## Dependencies
