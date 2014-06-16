@@ -85,7 +85,16 @@ do (
             #    BACKBONE 1.1.2
             # ********************
             parse : ->
-                flatten super, @flat_options
+                flat_options = _.clone @flat_options
+                if ( has_force_array = _.isArray flat_options.force_array )
+                    flat_options.safe = true
+
+                result = flatten super, flat_options
+
+                if has_force_array
+                    _transform_to_array result, flat_options.force_array
+                else
+                    result
 
             sync : (method, model, options)->
                 attrs = unflatten(
@@ -100,9 +109,43 @@ do (
                 super method, model, opts
 
 
-            # **********************
-            #    BACKBONE-LINEAR
-            # **********************
+            # *****************************
+            #    BACKBONE-LINEAR-PRIVATE
+            # *****************************
+            _transform_to_array = (object, force_array)->
+                for path in force_array
+                    if _.isArray object[path]
+                        continue
+                    else if object[path]?
+                        object[path] = [object[path]]
+                    else
+                        obj_in_path = {}
+                        object =
+                            _ object
+                            .pairs()
+                            .map (arr)->
+                                [key, val] = arr
+                                if key.match RegExp "^#{ path }"
+                                    obj_in_path["#{
+                                        path.match(/\.(\w+)$/)[1]
+                                    }"] = val
+                                    null
+                                else
+                                    [key, val]
+                            .compact()
+                            .object()
+                            .value()
+                        object[path] =
+                            if _.size obj_in_path
+                                [obj_in_path]
+                            else
+                                []
+                object
+
+
+            # ****************************
+            #    BACKBONE-LINEAR-PUBLIC
+            # ****************************
             flat_options : {}
 
 ) ->

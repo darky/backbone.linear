@@ -17,7 +17,7 @@
     }
   })(this, _, Backbone, function(_, Backbone) {
     return Backbone.Linear_Model = (function(_super) {
-      var flatten, unflatten;
+      var flatten, unflatten, _transform_to_array;
 
       __extends(Linear_Model, _super);
 
@@ -85,7 +85,17 @@
       };
 
       Linear_Model.prototype.parse = function() {
-        return flatten(Linear_Model.__super__.parse.apply(this, arguments), this.flat_options);
+        var flat_options, has_force_array, result;
+        flat_options = _.clone(this.flat_options);
+        if ((has_force_array = _.isArray(flat_options.force_array))) {
+          flat_options.safe = true;
+        }
+        result = flatten(Linear_Model.__super__.parse.apply(this, arguments), flat_options);
+        if (has_force_array) {
+          return _transform_to_array(result, flat_options.force_array);
+        } else {
+          return result;
+        }
       };
 
       Linear_Model.prototype.sync = function(method, model, options) {
@@ -95,6 +105,32 @@
           attrs: attrs
         });
         return Linear_Model.__super__.sync.call(this, method, model, opts);
+      };
+
+      _transform_to_array = function(object, force_array) {
+        var obj_in_path, path, _i, _len;
+        for (_i = 0, _len = force_array.length; _i < _len; _i++) {
+          path = force_array[_i];
+          if (_.isArray(object[path])) {
+            continue;
+          } else if (object[path] != null) {
+            object[path] = [object[path]];
+          } else {
+            obj_in_path = {};
+            object = _(object).pairs().map(function(arr) {
+              var key, val;
+              key = arr[0], val = arr[1];
+              if (key.match(RegExp("^" + path))) {
+                obj_in_path["" + (path.match(/\.(\w+)$/)[1])] = val;
+                return null;
+              } else {
+                return [key, val];
+              }
+            }).compact().object().value();
+            object[path] = _.size(obj_in_path) ? [obj_in_path] : [];
+          }
+        }
+        return object;
       };
 
       Linear_Model.prototype.flat_options = {};
