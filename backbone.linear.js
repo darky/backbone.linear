@@ -3,7 +3,8 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  (function(global, _, Backbone, factory) {
+  (function(global, factory) {
+    var Backbone, _;
     if (typeof define === "function" && define.amd) {
       return define(["underscore", "backbone"], function(_, Backbone) {
         return global.Backbone.Linear_Model = factory(_, Backbone);
@@ -15,7 +16,7 @@
     } else {
       return global.Backbone.Linear_Model = factory(_, Backbone);
     }
-  })(this, _, Backbone, function(_, Backbone) {
+  })(this, function(_, Backbone) {
     return Backbone.Linear_Model = (function(_super) {
       var flatten, unflatten, _transform_to_array;
 
