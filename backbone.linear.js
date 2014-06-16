@@ -14,7 +14,7 @@
       Backbone = require("backbone");
       return module.exports = factory(_, Backbone);
     } else {
-      return global.Backbone.Linear_Model = factory(_, Backbone);
+      return global.Backbone.Linear_Model = factory(global._, global.Backbone);
     }
   })(this, function(_, Backbone) {
     return Backbone.Linear_Model = (function(_super) {

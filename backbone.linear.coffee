@@ -161,4 +161,4 @@ do (
         module.exports = factory _, Backbone
 
     else
-        global.Backbone.Linear_Model = factory _, Backbone
+        global.Backbone.Linear_Model = factory global._, global.Backbone
