@@ -6,23 +6,23 @@
   (function(global, _, Backbone, factory) {
     if (typeof define === "function" && define.amd) {
       return define(["underscore", "backbone"], function(_, Backbone) {
-        return global.Backbone.LinearModel = factory(_, Backbone);
+        return global.Backbone.Linear_Model = factory(_, Backbone);
       });
     } else if (typeof module !== "undefined" && module.exports) {
       _ = require("undescore");
       Backbone = require("backbone");
       return module.exports = factory(_, Backbone);
     } else {
-      return global.Backbone.LinearModel = factory(_, Backbone);
+      return global.Backbone.Linear_Model = factory(_, Backbone);
     }
   })(this, _, Backbone, function(_, Backbone) {
-    return Backbone.LinearModel = (function(_super) {
+    return Backbone.Linear_Model = (function(_super) {
       var flatten, unflatten;
 
-      __extends(LinearModel, _super);
+      __extends(Linear_Model, _super);
 
-      function LinearModel() {
-        return LinearModel.__super__.constructor.apply(this, arguments);
+      function Linear_Model() {
+        return Linear_Model.__super__.constructor.apply(this, arguments);
       }
 
       flatten = function(target, opts) {
@@ -84,26 +84,24 @@
         });
       };
 
-      LinearModel.prototype.parse = function() {
-        return flatten(LinearModel.__super__.parse.apply(this, arguments), this.flat_options);
+      Linear_Model.prototype.parse = function() {
+        return flatten(Linear_Model.__super__.parse.apply(this, arguments), this.flat_options);
       };
 
-      LinearModel.prototype.sync = function(method, model, options) {
+      Linear_Model.prototype.sync = function(method, model, options) {
         var attrs, opts;
         attrs = unflatten(options.attrs || model.toJSON(options), this.flat_options);
         opts = _.extend(options, {
           attrs: attrs
         });
-        return LinearModel.__super__.sync.call(this, method, model, opts);
+        return Linear_Model.__super__.sync.call(this, method, model, opts);
       };
 
-      LinearModel.prototype.flat_options = {};
+      Linear_Model.prototype.flat_options = {};
 
-      return LinearModel;
+      return Linear_Model;
 
     })(Backbone.Model);
   });
 
 }).call(this);
-
-//# sourceMappingURL=backbone.linear.map
