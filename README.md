@@ -2,25 +2,11 @@
 
 Easiest way to work with your Backbone.Model nested array-object attributes.
 
-## Using
-
-All similar `Backbone`, only using `Backbone.Linear_Model` class
-
-    var My_Linear_Model_Class = Backbone.Linear_Model.extend(
-        // bla-bla
-    )
-    
-Or coffee:
-    
-    class My_Linear_Model_Class extends Backbone.Linear_Model
-    
-        # bla-bla
-
 ## Idea
 
 Unlike other similar libraries, `Backbone.Linear` not fighting versus Backbone API and hardly rewrite them.
 `Backbone.Linear` - little extension, that extend only `parse` and `sync` methods in `Backbone.Model`
-For example if server respond:
+For example if server responds:
 
     {
         Cats:
@@ -58,9 +44,183 @@ Then you save it back to server, it transforms backward to:
                 weight: 2
             }
     }
+
+## Simple using
+
+All similar `Backbone`, only using `Backbone.Linear_Model` class
+
+    var My_Linear_Model_Class = Backbone.Linear_Model.extend(
+        // bla-bla
+    )
     
-`Backbone.Linear` use as engine [flat](//github.com/hughsk/flat) inside.
-If you want to rewrite default flat options, simply define `flat_options` object in your `Backbone.Linear_Model` class.
+## Extend using
+
+You can define `flat_options` settings to manipulate server <-> client transform behavior:
+
+### delimiter (default: ".")
+
+    var My_Linear_Model_Class = Backbone.Linear_Model.extend({
+        flat_options : {
+            delimiter : "-"
+        }
+    });
+    
+Server response:
+    
+    {
+        Cats:
+            Boris: {
+                age: 3,
+                weight: 4
+            },
+            Milla: {
+                age: 1,
+                weight: 2
+            }
+    }
+    
+Transforms to:
+
+    {
+        "Cats-Boris-age": 3,
+        "Cats-Boris-weight": 3,
+        "Cats-Milla-age": 1,
+        "Cats-Milla-weight": 2
+    }
+    
+And vice versa...
+
+### safe (default: false)
+
+    var My_Linear_Model_Class = Backbone.Linear_Model.extend({
+        flat_options : {
+            safe : true
+        }
+    });
+    
+Server response:
+    
+    {
+        Cats:
+            Boris: {
+                age: 3,
+                weight: 4,
+                toys: [
+                    "ball",
+                    "mouse"
+                ]
+            },
+            Milla: {
+                age: 1,
+                weight: 2
+            }
+    }
+    
+Transforms with preservation array structure:
+
+    {
+        "Cats.Boris.age": 3,
+        "Cats.Boris.weight": 3,
+        "Cats.Boris.toys": ["ball", "mouse"],
+        "Cats.Milla.age": 1,
+        "Cats.Milla.weight": 2
+    }
+    
+Instead:
+
+    {
+        "Cats.Boris.age": 3,
+        "Cats.Boris.weight": 3,
+        "Cats.Boris.toys.0": "ball",
+        "Cats.Boris.toys.1": "mouse",
+        "Cats.Milla.age": 1,
+        "Cats.Milla.weight": 2
+    }
+    
+### object (default: false)
+
+    var My_Linear_Model_Class = Backbone.Linear_Model.extend({
+        flat_options : {
+            object : true
+        }
+    });
+
+When your client data:
+
+    {
+        "Cats.Boris.age": 3,
+        "Cats.Boris.weight": 3,
+        "Cats.Boris.toys.0": "ball",
+        "Cats.Boris.toys.1": "mouse",
+        "Cats.Milla.age": 1,
+        "Cats.Milla.weight": 2
+    }
+    
+Will save on server, array not be created automatically:
+
+    {
+        "Cats.Boris.age": 3,
+        "Cats.Boris.weight": 3,
+        "Cats.Boris.toys": {
+            0: "ball",
+            1: "mouse"
+        },
+        "Cats.Milla.age": 1,
+        "Cats.Milla.weight": 2
+    }
+    
+Instead:
+
+    {
+        "Cats.Boris.age": 3,
+        "Cats.Boris.weight": 3,
+        "Cats.Boris.toys": ["ball", "mouse"],
+        "Cats.Milla.age": 1,
+        "Cats.Milla.weight": 2
+    }
+    
+### force_array (default: undefined)
+
+    var My_Linear_Model_Class = Backbone.Linear_Model.extend({
+        flat_options : {
+            force_array : [
+                "Cats.Boris.age",
+                "Cats.Boris.eyes",
+                "Cats.Boris.toys",
+                "Cats.Milla.toys"
+            ]
+        }
+    });
+    
+And server response:
+
+    {
+        "Cats.Boris.age": 3,
+        "Cats.Boris.weight": 3,
+        "Cats.Boris.toys": {
+            item: "ball"
+        },
+        "Cats.Boris.eyes": [
+            "left_eye",
+            "right_eye"
+        ],
+        "Cats.Milla.age": 1,
+        "Cats.Milla.weight": 2
+    }
+    
+Guarantees the creation of array:
+
+    {
+        "Cats.Boris.age": [3],
+        "Cats.Boris.weight": 3,
+        "Cats.Boris.toys": [{item: "ball"}],
+        "Cats.Boris.eyes: ["left_eye", "right_eye"]
+        "Cats.Milla.age": 1,
+        "Cats.Milla.weight": 2,
+        "Cats.Milla.toys": []
+    }
+    
+**Note: When using `force_array` - option `safe` set to `true` automatically**
 
 ## Dependencies
 
