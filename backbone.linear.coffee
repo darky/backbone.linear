@@ -83,11 +83,14 @@ do (
             #    BACKBONE 1.1.2
             # ********************
             parse : ->
+                unless ( parent_call = super )?
+                    return parent_call
+                
                 flat_options = _.clone @flat_options
                 if ( has_force_array = _.isArray flat_options.force_array )
                     flat_options.safe = true
 
-                result = flatten super, flat_options
+                result = flatten parent_call, flat_options
 
                 if has_force_array
                     _transform_to_array result, flat_options.force_array

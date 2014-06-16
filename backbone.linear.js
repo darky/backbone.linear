@@ -86,12 +86,15 @@
       };
 
       Linear_Model.prototype.parse = function() {
-        var flat_options, has_force_array, result;
+        var flat_options, has_force_array, parent_call, result;
+        if ((parent_call = Linear_Model.__super__.parse.apply(this, arguments)) == null) {
+          return parent_call;
+        }
         flat_options = _.clone(this.flat_options);
         if ((has_force_array = _.isArray(flat_options.force_array))) {
           flat_options.safe = true;
         }
-        result = flatten(Linear_Model.__super__.parse.apply(this, arguments), flat_options);
+        result = flatten(parent_call, flat_options);
         if (has_force_array) {
           return _transform_to_array(result, flat_options.force_array);
         } else {
@@ -142,3 +145,5 @@
   });
 
 }).call(this);
+
+//# sourceMappingURL=backbone.linear.map
