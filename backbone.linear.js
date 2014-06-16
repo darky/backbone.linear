@@ -105,7 +105,7 @@
       Linear_Model.prototype.sync = function(method, model, options) {
         var attrs, opts;
         attrs = unflatten(options.attrs || model.toJSON(options), this.flat_options);
-        opts = _.extend(options, {
+        opts = _.extend({}, options, {
           attrs: attrs
         });
         return Linear_Model.__super__.sync.call(this, method, model, opts);

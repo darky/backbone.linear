@@ -103,6 +103,7 @@ do (
                     @flat_options
                 )
                 opts = _.extend(
+                    {}
                     options
                     attrs : attrs
                 )
