@@ -93,7 +93,8 @@
 
       Linear_Model.prototype.parse = function() {
         var flat_options, has_force_array, parent_call, result;
-        if ((parent_call = Linear_Model.__super__.parse.apply(this, arguments)) == null) {
+        parent_call = Linear_Model.__super__.parse.apply(this, arguments);
+        if ((parent_call == null) || parent_call === "" || parent_call instanceof this.constructor) {
           return parent_call;
         }
         flat_options = _.clone(this.flat_options);
@@ -109,12 +110,34 @@
       };
 
       Linear_Model.prototype.sync = function(method, model, options) {
-        var attrs, opts;
-        attrs = unflatten(options.attrs || model.toJSON(options), this.flat_options);
-        opts = _.extend({}, options, {
-          attrs: attrs
-        });
-        return Linear_Model.__super__.sync.call(this, method, model, opts);
+        var opts;
+        if (options == null) {
+          options = {};
+        }
+        switch (method) {
+          case "create":
+          case "update":
+          case "patch":
+            opts = _.extend({}, options, method === "patch" ? {
+              attrs: unflatten(options.attrs, this.flat_options)
+            } : {
+              unflat: true
+            });
+            return Linear_Model.__super__.sync.call(this, method, model, opts);
+          default:
+            return Linear_Model.__super__.sync.apply(this, arguments);
+        }
+      };
+
+      Linear_Model.prototype.toJSON = function(options) {
+        if (options == null) {
+          options = {};
+        }
+        if (options.unflat) {
+          return unflatten(Linear_Model.__super__.toJSON.apply(this, arguments), this.flat_options);
+        } else {
+          return Linear_Model.__super__.toJSON.apply(this, arguments);
+        }
       };
 
       _transform_to_array = function(object, force_array) {

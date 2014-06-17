@@ -85,7 +85,12 @@ do (
             #    BACKBONE 1.1.2
             # ********************
             parse : ->
-                unless ( parent_call = super )?
+                parent_call = super
+                if (
+                    not parent_call?  or
+                    parent_call is ""  or
+                    parent_call instanceof @constructor
+                )
                     return parent_call
                 
                 flat_options = _.clone @flat_options
@@ -99,18 +104,24 @@ do (
                 else
                     result
 
-            sync : (method, model, options)->
-                attrs = unflatten(
-                    options.attrs  or  model.toJSON(options)
-                    @flat_options
-                )
-                opts = _.extend(
-                    {}
-                    options
-                    attrs : attrs
-                )
+            sync : (method, model, options = {})->
+                switch method
+                    when "create", "update", "patch"
+                        opts = _.extend {}, options,
+                            if method is "patch"
+                                attrs : unflatten options.attrs, @flat_options
+                            else
+                                unflat : true
 
-                super method, model, opts
+                        super method, model, opts
+                    else
+                        super
+
+            toJSON : (options = {})->
+                if options.unflat
+                    unflatten super, @flat_options
+                else
+                    super
 
 
             # *****************************
