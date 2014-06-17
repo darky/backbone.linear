@@ -4,16 +4,10 @@ do (
 
         class Backbone.Linear_Model extends Backbone.Model
 
-            # ************
-            #    STATIC
-            # ************
-            @$ = {}
-
-
             # ****************
             #    FLAT 1.2.1
             # ****************
-            @$.flatten = flatten = (target, opts = {})->
+            @flatten = flatten = (target, opts = {})->
                 delimiter = opts.delimiter  or  "."
                 output = {}
 
@@ -41,7 +35,7 @@ do (
                 step target
                 output
 
-            @$.unflatten = unflatten = (target, opts = {})->
+            @unflatten = unflatten = (target, opts = {})->
                 delimiter = opts.delimiter  or  "."
                 result = {}
 

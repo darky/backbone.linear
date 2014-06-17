@@ -26,9 +26,7 @@
         return Linear_Model.__super__.constructor.apply(this, arguments);
       }
 
-      Linear_Model.$ = {};
-
-      Linear_Model.$.flatten = flatten = function(target, opts) {
+      Linear_Model.flatten = flatten = function(target, opts) {
         var delimiter, output, step;
         if (opts == null) {
           opts = {};
@@ -53,7 +51,7 @@
         return output;
       };
 
-      Linear_Model.$.unflatten = unflatten = function(target, opts) {
+      Linear_Model.unflatten = unflatten = function(target, opts) {
         var delimiter, getkey, result;
         if (opts == null) {
           opts = {};
