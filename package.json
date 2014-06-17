@@ -21,5 +21,16 @@
     "unflatten",
     "split"
   ],
+  "devDependencies": {
+    "backbone"        : "1.1.2",
+    "coffee-script"   : "1.7.1",
+    "gulp"            : "3.8.0",
+    "gulp-coffee"     : "2.0.1",
+    "gulp-coffeelint" : "0.3.3",
+    "gulp-mocha"      : "0.4.1",
+    "gulp-qunit"      : "0.3.3",
+    "gulp-sourcemaps" : "0.4.1",
+    "underscore"      : "1.6.0"
+  },
   "author": "Vladislav Botvin <darkvlados@gmail.com>"
 }
