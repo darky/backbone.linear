@@ -1,5 +1,7 @@
 # Backbone.Linear
 
+[![](https://travis-ci.org/darrrk/backbone.linear.svg?branch=master)](https://travis-ci.org/darrrk/backbone.linear)
+
 Easiest way to work with your Backbone.Model nested array-object attributes.
 
 ## Idea
