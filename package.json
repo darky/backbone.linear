@@ -32,5 +32,8 @@
     "gulp-sourcemaps" : "0.4.1",
     "underscore"      : "1.6.0"
   },
+  "scripts": {
+      "test": "./node_modules/.bin/gulp"
+  },
   "author": "Vladislav Botvin <darkvlados@gmail.com>"
 }
