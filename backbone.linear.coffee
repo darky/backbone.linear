@@ -13,7 +13,7 @@ do (
             # ****************
             #    FLAT 1.2.1
             # ****************
-            @$.flatten = flatten = (target, opts)->
+            @$.flatten = flatten = (target, opts = {})->
                 delimiter = opts.delimiter  or  "."
                 output = {}
 
@@ -41,7 +41,7 @@ do (
                 step target
                 output
 
-            @$.unflatten = unflatten = (target, opts)->
+            @$.unflatten = unflatten = (target, opts = {})->
                 delimiter = opts.delimiter  or  "."
                 result = {}
 
@@ -71,18 +71,20 @@ do (
                     while key2 isnt undefined
                         if recipient[key1] is undefined
                             recipient[key1] =
-                                typeof key2 is "number"  and
-                                unless opts.object  then []  else {}
+                                if typeof key2 is "number"  and  not opts.object
+                                    []
+                                else
+                                    {}
 
                         recipient = recipient[key1]
                         if split.length > 0
                             key1 = getkey split.shift()
                             key2 = getkey split[0]
 
-                        # unflatten again for 'messy objects'
-                        recipient[key1] = unflatten target[key], opts
+                    # unflatten again for 'messy objects'
+                    recipient[key1] = unflatten target[key], opts
 
-                    return result
+                result
 
 
             # ********************
@@ -163,7 +165,7 @@ do (
             global.Backbone.Linear_Model = factory _, Backbone
 
     else if typeof module isnt "undefined"  and  module.exports
-        _ = require "undescore"
+        _ = require "underscore"
         Backbone = require "backbone"
         module.exports = factory _, Backbone
 

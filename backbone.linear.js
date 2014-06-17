@@ -30,6 +30,9 @@
 
       Linear_Model.$.flatten = flatten = function(target, opts) {
         var delimiter, output, step;
+        if (opts == null) {
+          opts = {};
+        }
         delimiter = opts.delimiter || ".";
         output = {};
         step = function(object, prev) {
@@ -52,6 +55,9 @@
 
       Linear_Model.$.unflatten = unflatten = function(target, opts) {
         var delimiter, getkey, result;
+        if (opts == null) {
+          opts = {};
+        }
         delimiter = opts.delimiter || ".";
         result = {};
         if (Object.prototype.toString.call(target) !== "[object Object]") {
@@ -66,7 +72,7 @@
             return parsedKey;
           }
         };
-        return Object.keys(target).forEach(function(key) {
+        Object.keys(target).forEach(function(key) {
           var key1, key2, recipient, split;
           split = key.split(delimiter);
           key1 = getkey(split.shift());
@@ -74,17 +80,17 @@
           recipient = result;
           while (key2 !== void 0) {
             if (recipient[key1] === void 0) {
-              recipient[key1] = typeof key2 === "number" && (!opts.object ? [] : {});
+              recipient[key1] = typeof key2 === "number" && !opts.object ? [] : {};
             }
             recipient = recipient[key1];
             if (split.length > 0) {
               key1 = getkey(split.shift());
               key2 = getkey(split[0]);
             }
-            recipient[key1] = unflatten(target[key], opts);
           }
-          return result;
+          return recipient[key1] = unflatten(target[key], opts);
         });
+        return result;
       };
 
       Linear_Model.prototype.parse = function() {
