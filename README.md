@@ -222,6 +222,15 @@ Guarantees the creation of array:
     
 **Note: When using `force_array` - option `safe` set to `true` automatically**
 
+## Helpers
+
+You can manually flatten, unflatten objects via static helpers:
+
+    Backbone.Linear_Model.flatten(target, options)
+    Backbone.Linear_Model.unflatten(target, options)
+
+As options you can use `delimiter`, `safe`, `object`, that described above
+
 ## Dependencies
 
 Backbone >= 0.9.9
