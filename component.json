@@ -10,7 +10,6 @@
     "array",
     "delimiter",
     "flat",
-    "json",
     "flatten",
     "unflatten",
     "split"
