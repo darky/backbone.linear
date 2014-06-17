@@ -233,7 +233,11 @@ As options you can use `delimiter`, `safe`, `object`, that described above
 
 ## Dependencies
 
-Backbone >= 0.9.9
+    switch Backbone.VERSION
+        when "1.1.2"
+            "Yep, all tests passing"
+        else
+            "Maybe, but not testing"
 
 ## License 
 
