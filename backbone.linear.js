@@ -10,7 +10,7 @@
         return global.Backbone.Linear_Model = factory(_, Backbone);
       });
     } else if (typeof module !== "undefined" && module.exports) {
-      _ = require("undescore");
+      _ = require("underscore");
       Backbone = require("backbone");
       return module.exports = factory(_, Backbone);
     } else {
