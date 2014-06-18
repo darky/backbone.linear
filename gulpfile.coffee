@@ -14,7 +14,12 @@ sourcemaps = require "gulp-sourcemaps"
 #    CONCAT-TASKS
 # ******************
 gulp.task "default", ["test", "build"]
-gulp.task "test", ["test-flat", "test-backbone", "test-backbone-extend"]
+gulp.task "test", [
+    "test-flat"
+    "test-backbone"
+    "test-backbone-extend"
+    "test-own"
+]
 gulp.task "build", ["lint", "compile"]
 
 
@@ -45,12 +50,14 @@ gulp.task "test-backbone-extend", ["test-backbone-extend-pre"], (cb)->
         console.log stderr
         cb err
         
+gulp.task "test-own", ["compile"], ->
+    
         
 # ***********
 #    BUILD
 # ***********
 gulp.task "lint", ->
-    gulp.src "*.coffee"
+    gulp.src ["*.coffee", "test/*.coffee"]
     .pipe coffeelint()
     .pipe coffeelint.reporter()
     
@@ -58,5 +65,23 @@ gulp.task "compile", ->
     gulp.src "backbone.linear.coffee"
     .pipe sourcemaps.init()
     .pipe coffee()
-    .pipe sourcemaps.write()
     .pipe gulp.dest "./"
+    .pipe sourcemaps.write
+        includeContent : false
+        sourceRoot     : "../"
+    .pipe gulp.dest "tmp"
+    
+    gulp.src "test/*.coffee"
+    .pipe sourcemaps.init()
+    .pipe coffee()
+    .pipe sourcemaps.write
+        includeContent : false
+        sourceRoot     : "../../test"
+    .pipe gulp.dest "tmp/test/"
+
+
+# *********
+#    DEV
+# *********
+gulp.task "dev", ->
+    gulp.watch ["*.coffee", "test/*.coffee"], ["build"]
