@@ -161,24 +161,37 @@ When your client data:
 Will save on server, array not be created automatically:
 
     {
-        "Cats.Boris.age": 3,
-        "Cats.Boris.weight": 3,
-        "Cats.Boris.toys": {
-            0: "ball",
-            1: "mouse"
-        },
-        "Cats.Milla.age": 1,
-        "Cats.Milla.weight": 2
+        Cats:
+            Boris: {
+                age: 3,
+                weight: 3,
+                toys: {
+                    0: "ball",
+                    1: "mouse"
+                }
+            },
+            Milla: {
+                age: 1,
+                weight: 2
+            }
     }
     
 Instead:
 
     {
-        "Cats.Boris.age": 3,
-        "Cats.Boris.weight": 3,
-        "Cats.Boris.toys": ["ball", "mouse"],
-        "Cats.Milla.age": 1,
-        "Cats.Milla.weight": 2
+        Cats:
+            Boris: {
+                age: 3,
+                weight: 3,
+                toys: [
+                    "ball",
+                    "mouse"
+                ]
+            },
+            Milla: {
+                age: 1,
+                weight: 2
+            }
     }
     
 ### force_array (default: undefined)
@@ -197,17 +210,22 @@ Instead:
 And server response:
 
     {
-        "Cats.Boris.age": 3,
-        "Cats.Boris.weight": 3,
-        "Cats.Boris.toys": {
-            item: "ball"
-        },
-        "Cats.Boris.eyes": [
-            "left_eye",
-            "right_eye"
-        ],
-        "Cats.Milla.age": 1,
-        "Cats.Milla.weight": 2
+        Cats:
+            Boris: {
+                age: 3,
+                weight: 3,
+                toys: {
+                    "item": "ball"
+                },
+                eyes: [
+                    "left_eye"
+                    "right_eye"
+                ]
+            },
+            Milla: {
+                age: 1,
+                weight: 2
+            }
     }
     
 Guarantees the creation of array:
