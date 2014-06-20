@@ -149,7 +149,7 @@
             object[path] = [object[path]];
           } else {
             obj_in_path = {};
-            object = _(object).pairs().map(function(arr) {
+            object = _.chain(object).pairs().map(function(arr) {
               var key, val;
               key = arr[0], val = arr[1];
               if (key.match(RegExp("^" + path))) {

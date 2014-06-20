@@ -136,7 +136,7 @@ do (
                     else
                         obj_in_path = {}
                         object =
-                            _ object
+                            _.chain object
                             .pairs()
                             .map (arr)->
                                 [key, val] = arr
