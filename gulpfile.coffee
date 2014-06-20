@@ -6,6 +6,7 @@ coffee = require "gulp-coffee"
 coffeelint = require "gulp-coffeelint"
 exec = require("child_process").exec
 mocha = require "gulp-mocha"
+mocha_phantomjs = require "gulp-mocha-phantomjs"
 qunit = require "gulp-qunit"
 sourcemaps = require "gulp-sourcemaps"
 
@@ -49,10 +50,12 @@ gulp.task "test-backbone-extend", ["test-backbone-extend-pre"], (cb)->
         console.log stdout
         console.log stderr
         cb err
-        
+
 gulp.task "test-own", ["compile"], ->
-    
-        
+    gulp.src "test/index.html"
+    .pipe mocha_phantomjs()
+
+
 # ***********
 #    BUILD
 # ***********
