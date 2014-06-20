@@ -31,16 +31,16 @@ describe "Backbone.Linear test api", ->
             JSON.parse data
         else
             Cats:
-                Boris: 
+                Boris:
                     age: 3,
                     weight: 3,
-                    toys: 
+                    toys:
                         "item": "ball"
                     eyes: [
                         "left_eye"
                         "right_eye"
                     ]
-                Milla: 
+                Milla:
                     age: 1,
                     weight: 2
 
@@ -222,8 +222,10 @@ describe "Backbone.Linear test api", ->
                 chai.expect(attrs["Cats.Milla.toys"]).a "array"
                 
                 chai.expect(attrs["Cats.Boris.age"]).have.members [3]
-                chai.expect(attrs["Cats.Boris.eyes"]).have.members ["left_eye", "right_eye"]
-                chai.expect(attrs["Cats.Boris.toys"][0]).have.property "toys", "ball"
+                chai.expect(attrs["Cats.Boris.eyes"])
+                .have.members ["left_eye", "right_eye"]
+                chai.expect(attrs["Cats.Boris.toys"][0])
+                .have.property "toys", "ball"
                 chai.expect(attrs["Cats.Milla.toys"]).be.empty
                     
                 done()
