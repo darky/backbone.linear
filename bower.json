@@ -27,7 +27,7 @@
     "backbone"         : "1.1.2",
     "chai"             : "1.9.1",
     "jquery"           : "1.11.1",
-    "jquery.ajax.fake" : "latest",
+    "jquery.ajax.fake" : "darrrk/jquery.ajax.fake",
     "mocha"            : "1.20.1",
     "underscore"       : "1.6.0"
   },
