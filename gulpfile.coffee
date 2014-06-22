@@ -68,11 +68,10 @@ gulp.task "compile", ->
     gulp.src "backbone.linear.coffee"
     .pipe sourcemaps.init()
     .pipe coffee()
-    .pipe gulp.dest "./"
     .pipe sourcemaps.write
         includeContent : false
-        sourceRoot     : "../"
-    .pipe gulp.dest "tmp"
+        sourceRoot     : "./"
+    .pipe gulp.dest "./"
     
     gulp.src "test/*.coffee"
     .pipe sourcemaps.init()
