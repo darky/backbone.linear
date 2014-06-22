@@ -97,7 +97,7 @@
           return parent_call;
         }
         flat_options = _.clone(this.flat_options);
-        if ((has_force_array = _.isArray(flat_options.force_array))) {
+        if (has_force_array = _.isArray(flat_options.force_array)) {
           flat_options.safe = true;
         }
         result = flatten(parent_call, flat_options);
