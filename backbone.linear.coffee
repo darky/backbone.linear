@@ -138,11 +138,10 @@ do (
                         object =
                             _.chain object
                             .pairs()
-                            .map (arr)->
-                                [key, val] = arr
+                            .map ([key, val])->
                                 if key.match RegExp "^#{ path }"
                                     obj_in_path["#{
-                                        path.match(/\.(\w+)$/)[1]
+                                        key.match(/\.(\w+)$/)[1]
                                     }"] = val
                                     null
                                 else

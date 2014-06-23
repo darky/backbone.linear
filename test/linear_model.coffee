@@ -225,7 +225,7 @@ describe "Backbone.Linear test api", ->
                 chai.expect(attrs["Cats.Boris.eyes"])
                 .have.members ["left_eye", "right_eye"]
                 chai.expect(attrs["Cats.Boris.toys"][0])
-                .have.property "toys", "ball"
+                .have.property "item", "ball"
                 chai.expect(attrs["Cats.Milla.toys"]).be.empty
                     
                 done()
