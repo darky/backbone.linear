@@ -5,7 +5,7 @@ do (
         class Backbone.Linear_Model extends Backbone.Model
 
             # ****************
-            #    FLAT 1.2.1
+            #    FLAT 1.3.0
             # ****************
             @flatten = flatten = (target, opts = {})->
                 delimiter = opts.delimiter  or  "."
