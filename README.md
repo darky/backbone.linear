@@ -92,15 +92,9 @@ Transforms to:
     
 And vice versa...
 
-### safe (default: false)
-
-    var My_Linear_Model_Class = Backbone.Linear_Model.extend({
-        flat_options : {
-            safe : true
-        }
-    });
+### safe (default: true)
     
-Server response:
+By default server response:
     
     {
         Cats:
@@ -128,7 +122,15 @@ Transforms with preservation array structure:
         "Cats.Milla.weight": 2
     }
     
-Instead:
+Use `safe : false`:
+
+    var My_Linear_Model_Class = Backbone.Linear_Model.extend({
+        flat_options : {
+            safe : false
+        }
+    });
+
+And server response will be with objectify arrays:
 
     {
         "Cats.Boris.age": 3,
@@ -240,7 +242,7 @@ Guarantees the creation of array:
         "Cats.Milla.toys": []
     }
     
-**Note: When using `force_array` - option `safe` set to `true` automatically**
+**Note: When using `force_array` - option `safe` force set to `true`**
 
 ## Helpers
 
