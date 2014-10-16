@@ -8,6 +8,9 @@ do (
             #    FLAT 1.3.0
             # ****************
             @flatten = flatten = (target, opts = {})->
+                unless opts.safe?
+                    opts.safe = true
+
                 delimiter = opts.delimiter  or  "."
                 output = {}
 
