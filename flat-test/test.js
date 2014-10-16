@@ -298,12 +298,14 @@ suite('Unflatten', function() {
 })
 
 suite('Arrays', function() {
-  test('Should be able to flatten arrays properly', function() {
+  test('Should be able to flatten arrays properly with safe : false', function() {
     assert.deepEqual({
         'a.0': 'foo'
       , 'a.1': 'bar'
     }, flatten({
       a: ['foo', 'bar']
+    }, {
+        safe: false
     }))
   })
 
