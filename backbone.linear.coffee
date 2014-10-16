@@ -160,7 +160,8 @@ do (
             # ****************************
             #    BACKBONE-LINEAR-PUBLIC
             # ****************************
-            flat_options : {}
+            flat_options :
+                safe : true
 
 ) ->
     

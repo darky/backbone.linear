@@ -138,6 +138,7 @@ describe "Backbone.Linear test api", ->
                 
     it "parse without `safe` from server", (done)->
         @linear_model.set "id", "safe"
+        @linear_model.flat_options = safe : false
         @linear_model.fetch
             fake : true
             wait : 30
@@ -153,7 +154,6 @@ describe "Backbone.Linear test api", ->
                 
     it "parse by `safe` from server", (done)->
         @linear_model.set "id", "safe"
-        @linear_model.flat_options = safe : true
         @linear_model.fetch
             fake : true
             wait : 30
