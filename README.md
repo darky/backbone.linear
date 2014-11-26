@@ -10,50 +10,60 @@ Unlike other similar libraries, `Backbone.Linear` not fighting versus Backbone A
 `Backbone.Linear` - little extension, that extend only `parse` and `sync` methods in `Backbone.Model`
 For example if server responds:
 
-    {
-        Cats:
-            Boris: {
-                age: 3,
-                weight: 4
-            },
-            Milla: {
-                age: 1,
-                weight: 2
-            }
+```json
+{
+    "Cats": {
+        "Boris": {
+            "age": 3,
+            "weight": 4
+        },
+        "Milla": {
+            "age": 1,
+            "weight": 2
+        }
     }
+}
+```
     
 In `parse` method it transforms in:
-    
-    {
-        "Cats.Boris.age": 3,
-        "Cats.Boris.weight": 3,
-        "Cats.Milla.age": 1,
-        "Cats.Milla.weight": 2
-    }
+
+```json
+{
+    "Cats.Boris.age": 3,
+    "Cats.Boris.weight": 3,
+    "Cats.Milla.age": 1,
+    "Cats.Milla.weight": 2
+}
+```
     
 And you can use all Backbone API power with linear attributes.
 Then you save it back to server, it transforms backward to:
 
-    {
-        Cats:
-            Boris: {
-                age: 3,
-                weight: 8,
-                note: "Oh, Boris look plumped"
-            },
-            Milla: {
-                age: 1,
-                weight: 2
-            }
+```json
+{
+    "Cats": {
+        "Boris": {
+            "age": 3,
+            "weight": 8,
+            "note": "Oh, Boris look plumped"
+        },
+        "Milla": {
+            "age": 1,
+            "weight": 2
+        }
     }
+}
+```
 
 ## Simple using
 
 All similar `Backbone`, only using `Backbone.Linear_Model` class
 
-    var My_Linear_Model_Class = Backbone.Linear_Model.extend(
-        // bla-bla
-    )
+```javascript
+var My_Linear_Model_Class = Backbone.Linear_Model.extend(
+    // bla-bla
+)
+```
     
 ## Extend using
 
@@ -61,186 +71,219 @@ You can define `flat_options` settings to manipulate server <-> client transform
 
 ### delimiter (default: ".")
 
-    var My_Linear_Model_Class = Backbone.Linear_Model.extend({
-        flat_options : {
-            delimiter : "-"
-        }
-    });
+```javascript
+var My_Linear_Model_Class = Backbone.Linear_Model.extend({
+    flat_options : {
+        delimiter : "-"
+    }
+});
+```
     
 Server response:
-    
-    {
-        Cats:
-            Boris: {
-                age: 3,
-                weight: 4
-            },
-            Milla: {
-                age: 1,
-                weight: 2
-            }
+
+```json
+{
+    "Cats": {
+        "Boris": {
+            "age": 3,
+            "weight": 4
+        },
+        "Milla": {
+            "age": 1,
+            "weight": 2
+        }
     }
+}
+```
     
 Transforms to:
 
-    {
-        "Cats-Boris-age": 3,
-        "Cats-Boris-weight": 3,
-        "Cats-Milla-age": 1,
-        "Cats-Milla-weight": 2
-    }
+```json
+{
+    "Cats-Boris-age": 3,
+    "Cats-Boris-weight": 3,
+    "Cats-Milla-age": 1,
+    "Cats-Milla-weight": 2
+}
+```
     
 And vice versa...
 
 ### safe (default: true)
     
 By default server response:
-    
-    {
-        Cats:
-            Boris: {
-                age: 3,
-                weight: 4,
-                toys: [
-                    "ball",
-                    "mouse"
-                ]
-            },
-            Milla: {
-                age: 1,
-                weight: 2
-            }
+
+```json
+{
+    "Cats": {
+        "Boris": {
+            "age": 3,
+            "weight": 4,
+            "toys": [
+                "ball",
+                "mouse"
+            ]
+        },
+        "Milla": {
+            "age": 1,
+            "weight": 2
+        }
     }
+}
+```
     
 Transforms with preservation array structure:
 
-    {
-        "Cats.Boris.age": 3,
-        "Cats.Boris.weight": 3,
-        "Cats.Boris.toys": ["ball", "mouse"],
-        "Cats.Milla.age": 1,
-        "Cats.Milla.weight": 2
-    }
+```json
+{
+    "Cats.Boris.age": 3,
+    "Cats.Boris.weight": 3,
+    "Cats.Boris.toys": ["ball", "mouse"],
+    "Cats.Milla.age": 1,
+    "Cats.Milla.weight": 2
+}
+```
     
 Use `safe : false`:
 
-    var My_Linear_Model_Class = Backbone.Linear_Model.extend({
-        flat_options : {
-            safe : false
-        }
-    });
+```javascript
+var My_Linear_Model_Class = Backbone.Linear_Model.extend({
+    flat_options : {
+        safe : false
+    }
+});
+```
 
 And server response will be with objectify arrays:
 
-    {
-        "Cats.Boris.age": 3,
-        "Cats.Boris.weight": 3,
-        "Cats.Boris.toys.0": "ball",
-        "Cats.Boris.toys.1": "mouse",
-        "Cats.Milla.age": 1,
-        "Cats.Milla.weight": 2
-    }
+```json
+{
+    "Cats.Boris.age": 3,
+    "Cats.Boris.weight": 3,
+    "Cats.Boris.toys.0": "ball",
+    "Cats.Boris.toys.1": "mouse",
+    "Cats.Milla.age": 1,
+    "Cats.Milla.weight": 2
+}
+```
     
 ### object (default: false)
 
-    var My_Linear_Model_Class = Backbone.Linear_Model.extend({
-        flat_options : {
-            object : true
-        }
-    });
+```javascript
+var My_Linear_Model_Class = Backbone.Linear_Model.extend({
+    flat_options : {
+        object : true
+    }
+});
+```
 
 When your client data:
 
-    {
-        "Cats.Boris.age": 3,
-        "Cats.Boris.weight": 3,
-        "Cats.Boris.toys.0": "ball",
-        "Cats.Boris.toys.1": "mouse",
-        "Cats.Milla.age": 1,
-        "Cats.Milla.weight": 2
-    }
+```json
+{
+    "Cats.Boris.age": 3,
+    "Cats.Boris.weight": 3,
+    "Cats.Boris.toys.0": "ball",
+    "Cats.Boris.toys.1": "mouse",
+    "Cats.Milla.age": 1,
+    "Cats.Milla.weight": 2
+}
+```
     
 Will save on server, array not be created automatically:
 
-    {
-        Cats:
-            Boris: {
-                age: 3,
-                weight: 3,
-                toys: {
-                    0: "ball",
-                    1: "mouse"
-                }
-            },
-            Milla: {
-                age: 1,
-                weight: 2
+```json
+{
+    "Cats": {
+        "Boris": {
+            "age": 3,
+            "weight": 3,
+            "toys": {
+                0: "ball",
+                1: "mouse"
             }
+        },
+        "Milla": {
+            "age": 1,
+            "weight": 2
+        }
     }
+}
+```
     
 Instead:
 
-    {
-        Cats:
-            Boris: {
-                age: 3,
-                weight: 3,
-                toys: [
-                    "ball",
-                    "mouse"
-                ]
-            },
-            Milla: {
-                age: 1,
-                weight: 2
-            }
+```json
+{
+    "Cats": {
+        "Boris": {
+            "age": 3,
+            "weight": 3,
+            "toys": [
+                "ball",
+                "mouse"
+            ]
+        },
+        "Milla": {
+            "age": 1,
+            "weight": 2
+        }
     }
+}
+```
     
 ### force_array (default: undefined)
 
-    var My_Linear_Model_Class = Backbone.Linear_Model.extend({
-        flat_options : {
-            force_array : [
-                "Cats.Boris.age",
-                "Cats.Boris.eyes",
-                "Cats.Boris.toys",
-                "Cats.Milla.toys"
-            ]
-        }
-    });
+```javascript
+var My_Linear_Model_Class = Backbone.Linear_Model.extend({
+    flat_options : {
+        force_array : [
+            "Cats.Boris.age",
+            "Cats.Boris.eyes",
+            "Cats.Boris.toys",
+            "Cats.Milla.toys"
+        ]
+    }
+});
+```
     
 And server response:
 
-    {
-        Cats:
-            Boris: {
-                age: 3,
-                weight: 3,
-                toys: {
-                    "item": "ball"
-                },
-                eyes: [
-                    "left_eye"
-                    "right_eye"
-                ]
+```json
+{
+    "Cats": {
+        "Boris": {
+            "age": 3,
+            "weight": 3,
+            "toys": {
+                "item": "ball"
             },
-            Milla: {
-                age: 1,
-                weight: 2
-            }
+            "eyes": [
+                "left_eye"
+                "right_eye"
+            ]
+        },
+        "Milla": {
+            "age": 1,
+            "weight": 2
+        }
     }
+}
+```
     
 Guarantees the creation of array:
 
-    {
-        "Cats.Boris.age": [3],
-        "Cats.Boris.weight": 3,
-        "Cats.Boris.toys": [{item: "ball"}],
-        "Cats.Boris.eyes: ["left_eye", "right_eye"]
-        "Cats.Milla.age": 1,
-        "Cats.Milla.weight": 2,
-        "Cats.Milla.toys": []
-    }
+```json
+{
+    "Cats.Boris.age": [3],
+    "Cats.Boris.weight": 3,
+    "Cats.Boris.toys": [{item: "ball"}],
+    "Cats.Boris.eyes: ["left_eye", "right_eye"]
+    "Cats.Milla.age": 1,
+    "Cats.Milla.weight": 2,
+    "Cats.Milla.toys": []
+}
+```
     
 **Note: When using `force_array` - option `safe` force set to `true`**
 
@@ -248,18 +291,22 @@ Guarantees the creation of array:
 
 You can manually flatten, unflatten objects via static helpers:
 
-    Backbone.Linear_Model.flatten(target, options)
-    Backbone.Linear_Model.unflatten(target, options)
+```javascript
+Backbone.Linear_Model.flatten(target, options)
+Backbone.Linear_Model.unflatten(target, options)
+```
 
 As options you can use `delimiter`, `safe`, `object`, that described above
 
 ## Dependencies
 
-    switch Backbone.VERSION
-        when "1.1.2"
-            "Yep, all tests passing"
-        else
-            "Maybe, but not testing"
+```coffeescript
+switch Backbone.VERSION
+    when "1.1.2"
+        "Yep, all tests passing"
+    else
+        "Maybe, but not testing"
+```
 
 ## License 
 
