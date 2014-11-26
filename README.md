@@ -278,7 +278,7 @@ Guarantees the creation of array:
     "Cats.Boris.age": [3],
     "Cats.Boris.weight": 3,
     "Cats.Boris.toys": [{"item": "ball"}],
-    "Cats.Boris.eyes: ["left_eye", "right_eye"],
+    "Cats.Boris.eyes": ["left_eye", "right_eye"],
     "Cats.Milla.age": 1,
     "Cats.Milla.weight": 2,
     "Cats.Milla.toys": []
