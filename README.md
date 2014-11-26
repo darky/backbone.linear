@@ -199,8 +199,8 @@ Will save on server, array not be created automatically:
             "age": 3,
             "weight": 3,
             "toys": {
-                0: "ball",
-                1: "mouse"
+                "0": "ball",
+                "1": "mouse"
             }
         },
         "Milla": {
@@ -277,8 +277,8 @@ Guarantees the creation of array:
 {
     "Cats.Boris.age": [3],
     "Cats.Boris.weight": 3,
-    "Cats.Boris.toys": [{item: "ball"}],
-    "Cats.Boris.eyes: ["left_eye", "right_eye"]
+    "Cats.Boris.toys": [{"item": "ball"}],
+    "Cats.Boris.eyes: ["left_eye", "right_eye"],
     "Cats.Milla.age": 1,
     "Cats.Milla.weight": 2,
     "Cats.Milla.toys": []
@@ -292,8 +292,8 @@ Guarantees the creation of array:
 You can manually flatten, unflatten objects via static helpers:
 
 ```javascript
-Backbone.Linear_Model.flatten(target, options)
-Backbone.Linear_Model.unflatten(target, options)
+Backbone.Linear_Model.flatten(target, options);
+Backbone.Linear_Model.unflatten(target, options);
 ```
 
 As options you can use `delimiter`, `safe`, `object`, that described above
