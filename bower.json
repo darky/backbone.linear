@@ -25,10 +25,10 @@
   ],
   "dependencies": {
     "backbone"         : "1.1.2",
-    "chai"             : "1.9.2",
-    "jquery"           : "1.11.1",
+    "chai"             : "1.10.0",
+    "jquery"           : "1.11.2",
     "jquery.ajax.fake" : "latest",
-    "mocha"            : "1.21.5",
+    "mocha"            : "2.0.1",
     "underscore"       : "1.7.0"
   },
   "license": "MIT"
