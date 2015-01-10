@@ -105,5 +105,11 @@
     },
     "spacing_after_comma": {
         "level": "error"
+    },
+    "ensure_comprehensions": {
+        "level": "error"
+    },
+    "transform_messes_up_line_numbers": {
+        "level": "error"
     }
 }
