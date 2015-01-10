@@ -28,7 +28,7 @@
     "chai"             : "1.10.0",
     "jquery"           : "1.11.2",
     "jquery.ajax.fake" : "latest",
-    "mocha"            : "2.0.1",
+    "mocha"            : "2.1.0",
     "underscore"       : "1.7.0"
   },
   "license": "MIT"
