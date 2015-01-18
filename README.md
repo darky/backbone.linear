@@ -231,7 +231,55 @@ Instead:
     }
 }
 ```
+
+### overwrite (default: false)
+
+```javascript
+var My_Linear_Model_Class = Backbone.Linear_Model.extend({
+    flat_options : {
+        overwrite : true
+    }
+});
+```
+
+When your client data:
+
+```json
+{
+    "Cats.Boris.age": 3,
+    "Cats.Boris.toys": true,
+    "Cats.Boris.toys.0": "ball",
+    "Cats.Boris.toys.1": "mouse"
+}
+```
     
+Will save on server, internal array, with collision by key, will be included:
+
+```json
+{
+    "Cats": {
+        "Boris": {
+            "toys" : [
+                "ball",
+                "mouse"
+            ]
+        }
+    }
+}
+```
+    
+Instead:
+
+```json
+{
+    "Cats": {
+        "Boris": {
+            "toys" : true
+        }
+    }
+}
+```
+
 ### force_array (default: undefined)
 
 ```javascript
