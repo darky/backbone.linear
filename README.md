@@ -253,7 +253,7 @@ When your client data:
 }
 ```
     
-Will save on server, internal array, with collision by key, will be included:
+Will save on server - internal array, with collision by key, will be included:
 
 ```json
 {
