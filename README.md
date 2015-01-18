@@ -246,7 +246,6 @@ When your client data:
 
 ```json
 {
-    "Cats.Boris.age": 3,
     "Cats.Boris.toys": true,
     "Cats.Boris.toys.0": "ball",
     "Cats.Boris.toys.1": "mouse"
