@@ -5,7 +5,7 @@ do (
         class Backbone.Linear_Model extends Backbone.Model
 
             # ****************
-            #    FLAT 1.4.0
+            #    FLAT 1.5.0
             # ****************
             @flatten = flatten = (target, opts = {})->
                 unless opts.safe?
@@ -44,6 +44,7 @@ do (
 
             @unflatten = unflatten = (target, opts = {})->
                 delimiter = opts.delimiter  or  "."
+                overwrite = opts.overwrite  or  false
                 result = {}
 
                 if Object::toString.call(target) isnt "[object Object]"
@@ -70,7 +71,14 @@ do (
                     recipient = result
 
                     while key2 isnt undefined
-                        if recipient[key1] is undefined
+                        type = Object.prototype.toString.call recipient[key1]
+                        isobject =
+                            type is "[object Object]"  or
+                            type is "[object Array]"
+                        if (
+                            (overwrite  and  not isobject)  or
+                            (not overwrite  and  recipient[key1] is undefined)
+                        )
                             recipient[key1] =
                                 if typeof key2 is "number"  and  not opts.object
                                     []
