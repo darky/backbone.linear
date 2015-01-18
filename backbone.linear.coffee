@@ -5,7 +5,7 @@ do (
         class Backbone.Linear_Model extends Backbone.Model
 
             # ****************
-            #    FLAT 1.3.0
+            #    FLAT 1.4.0
             # ****************
             @flatten = flatten = (target, opts = {})->
                 unless opts.safe?
@@ -30,7 +30,11 @@ do (
                             else
                                 key
 
-                        if not isarray  and  isobject
+                        if (
+                            not isarray  and
+                            isobject  and
+                            Object.keys(value).length
+                        )
                             return step value, newKey
 
                         output[newKey] = value
