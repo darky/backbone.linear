@@ -229,3 +229,32 @@ describe "Backbone.Linear test api", ->
                 chai.expect(attrs["Cats.Milla.toys"]).be.empty
                     
                 done()
+
+
+    it "send to server without `overwrite`", (done)->
+        @linear_model.set
+            "Cats.Boris.toys"   : "exists"
+            "Cats.Boris.toys.0" : "ball"
+        @linear_model.save null,
+            fake : true
+            wait : true
+
+            success : (model, mirrored)->
+                chai.expect mirrored.Cats.Boris.toys
+                .equal "exists"
+                done()
+
+
+    it "send to server with `overwrite`", (done)->
+        @linear_model.set
+            "Cats.Boris.toys"   : "exists"
+            "Cats.Boris.toys.0" : "ball"
+        @linear_model.flat_options = overwrite : true
+        @linear_model.save null,
+            fake : true
+            wait : true
+
+            success : (model, mirrored)->
+                chai.expect mirrored.Cats.Boris.toys[0]
+                .equal "ball"
+                done()
