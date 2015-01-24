@@ -1,5 +1,5 @@
 do (
-    global = @
+    global = do -> @
     factory = (_, Backbone)->
 
         class Backbone.Linear_Model extends Backbone.Model
