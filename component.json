@@ -1,6 +1,6 @@
 {
   "name"          : "backbone.linear",
-  "version"       : "0.7.0",
+  "version"       : "0.7.1",
   "description"   : "Easiest way to work with your Backbone.Model nested array-object attributes.",
   "keywords"      : [
     "backbone",
