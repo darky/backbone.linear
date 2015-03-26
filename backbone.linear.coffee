@@ -5,7 +5,7 @@ do (
         class Backbone.Linear_Model extends Backbone.Model
 
             # ****************
-            #    FLAT 1.5.0
+            #    FLAT 1.5.1
             # ****************
             @flatten = flatten = (target, opts = {})->
                 unless opts.safe?
@@ -20,6 +20,7 @@ do (
                         value = object[key]
                         isarray = opts.safe  and  Array.isArray value
                         type = Object::toString.call value
+                        isbuffer = isBuffer value
                         isobject =
                             type is "[object Object]"  or
                             type is "[object Array]"
@@ -32,6 +33,7 @@ do (
 
                         if (
                             not isarray  and
+                            not isbuffer  and
                             isobject  and
                             Object.keys(value).length
                         )
@@ -47,7 +49,11 @@ do (
                 overwrite = opts.overwrite  or  false
                 result = {}
 
-                if Object::toString.call(target) isnt "[object Object]"
+                isbuffer = isBuffer target
+                if (
+                    isbuffer  or
+                    Object::toString.call(target) isnt "[object Object]"
+                )
                     return target
 
                 # safely ensure that the key is
@@ -94,6 +100,11 @@ do (
                     recipient[key1] = unflatten target[key], opts
 
                 result
+
+            isBuffer = (value)->
+                unless Buffer?
+                    return false
+                return Buffer.isBuffer value
 
 
             # ********************
