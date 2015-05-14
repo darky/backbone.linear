@@ -130,8 +130,8 @@
   });
 
   test("urlError", 2, function() {
-    var model = new Backbone.Linear_Model();
-    raises(function() {
+    var model = new Backbone.Model();
+    throws(function() {
       model.fetch();
     });
     model.fetch({url: '/one/two'});
@@ -139,7 +139,7 @@
   });
 
   test("#1052 - `options` is optional.", 0, function() {
-    var model = new Backbone.Linear_Model();
+    var model = new Backbone.Model();
     model.url = '/test';
     Backbone.sync('create', model);
   });
@@ -148,13 +148,13 @@
     Backbone.ajax = function(settings){
       strictEqual(settings.url, '/test');
     };
-    var model = new Backbone.Linear_Model();
+    var model = new Backbone.Model();
     model.url = '/test';
     Backbone.sync('create', model);
   });
 
   test("Call provided error callback on error.", 1, function() {
-    var model = new Backbone.Linear_Model;
+    var model = new Backbone.Model;
     model.url = '/test';
     Backbone.sync('read', model, {
       error: function() { ok(true); }
@@ -163,7 +163,7 @@
   });
 
   test('Use Backbone.emulateHTTP as default.', 2, function() {
-    var model = new Backbone.Linear_Model;
+    var model = new Backbone.Model;
     model.url = '/test';
 
     Backbone.emulateHTTP = true;
@@ -176,7 +176,7 @@
   });
 
   test('Use Backbone.emulateJSON as default.', 2, function() {
-    var model = new Backbone.Linear_Model;
+    var model = new Backbone.Model;
     model.url = '/test';
 
     Backbone.emulateJSON = true;
@@ -190,7 +190,7 @@
 
   test("#1756 - Call user provided beforeSend function.", 4, function() {
     Backbone.emulateHTTP = true;
-    var model = new Backbone.Linear_Model;
+    var model = new Backbone.Model;
     model.url = '/test';
     var xhr = {
       setRequestHeader: function(header, value) {
@@ -205,6 +205,17 @@
       }
     });
     strictEqual(this.ajaxSettings.beforeSend(xhr), false);
+  });
+
+  test('#2928 - Pass along `textStatus` and `errorThrown`.', 2, function() {
+    var model = new Backbone.Model;
+    model.url = '/test';
+    model.on('error', function(model, xhr, options) {
+      strictEqual(options.textStatus, 'textStatus');
+      strictEqual(options.errorThrown, 'errorThrown');
+    });
+    model.fetch();
+    this.ajaxSettings.error({}, 'textStatus', 'errorThrown');
   });
 
 })();
