@@ -1,7 +1,7 @@
 {
   "name": "backbone.linear",
   "main": "backbone.linear.js",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "homepage": "https://github.com/darrrk/backbone.linear",
   "authors": [
     "Vladislav Botvin <darkvlados@gmail.com>"
