@@ -349,7 +349,7 @@ As options you can use `delimiter`, `safe`, `object`, that described above
 
 ```coffeescript
 switch Backbone.VERSION
-    when "1.1.2"
+    when "1.1.2", "1.2.0"
         "Yep, all tests passing"
     else
         "Maybe, but not testing"

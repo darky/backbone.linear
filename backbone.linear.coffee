@@ -107,7 +107,7 @@ factory = (_, Backbone)->
 
 
         # ********************
-        #    BACKBONE 1.1.2
+        #    BACKBONE 1.2.0
         # ********************
         parse : ->
             parent_call = super
