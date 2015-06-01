@@ -114,5 +114,11 @@
     },
     "braces_spacing": {
         "level": "error"
+    },
+    "eol_last": {
+        "level": "error"
+    },
+    "no_this": {
+        "level": "error"
     }
 }
