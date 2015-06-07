@@ -5,10 +5,10 @@
   module("Backbone.Collection", {
 
     setup: function() {
-      a         = new Backbone.Linear_Model({id: 3, label: 'a'});
-      b         = new Backbone.Linear_Model({id: 2, label: 'b'});
-      c         = new Backbone.Linear_Model({id: 1, label: 'c'});
-      d         = new Backbone.Linear_Model({id: 0, label: 'd'});
+      a         = new Backbone.Model({id: 3, label: 'a'});
+      b         = new Backbone.Model({id: 2, label: 'b'});
+      c         = new Backbone.Model({id: 1, label: 'c'});
+      d         = new Backbone.Model({id: 0, label: 'd'});
       e         = null;
       col       = new Backbone.Collection([a,b,c,d]);
       otherCol  = new Backbone.Collection();
@@ -58,7 +58,7 @@
   });
 
   test("clone preserves model and comparator", 3, function() {
-    var Model = Backbone.Linear_Model.extend();
+    var Model = Backbone.Model.extend();
     var comparator = function(model){ return model.id; };
 
     var collection = new Backbone.Collection([{id: 1}], {
@@ -81,7 +81,7 @@
   });
 
   test("get with non-default ids", 5, function() {
-    var MongoModel = Backbone.Linear_Model.extend({idAttribute: '_id'});
+    var MongoModel = Backbone.Model.extend({idAttribute: '_id'});
     var model = new MongoModel({_id: 100});
     var col = new Backbone.Collection([model], {model: MongoModel});
     equal(col.get(100), model);
@@ -126,7 +126,7 @@
   test("add", 14, function() {
     var added, opts, secondAdded;
     added = opts = secondAdded = null;
-    e = new Backbone.Linear_Model({id: 10, label : 'e'});
+    e = new Backbone.Model({id: 10, label : 'e'});
     otherCol.add(e);
     otherCol.on('add', function() {
       secondAdded = true;
@@ -143,9 +143,9 @@
     equal(secondAdded, null);
     ok(opts.amazing);
 
-    var f = new Backbone.Linear_Model({id: 20, label : 'f'});
-    var g = new Backbone.Linear_Model({id: 21, label : 'g'});
-    var h = new Backbone.Linear_Model({id: 22, label : 'h'});
+    var f = new Backbone.Model({id: 20, label : 'f'});
+    var g = new Backbone.Model({id: 21, label : 'g'});
+    var h = new Backbone.Model({id: 22, label : 'h'});
     var atCol = new Backbone.Collection([f, g, h]);
     equal(atCol.length, 3);
     atCol.add(e, {at: 1});
@@ -182,7 +182,7 @@
     });
 
     var col = new Col([{id: 2}, {id: 3}]);
-    col.add(new Backbone.Linear_Model({id: 1}), {at:   1});
+    col.add(new Backbone.Model({id: 1}), {at:   1});
 
     equal(col.pluck('id').join(' '), '3 1 2');
   });
@@ -212,7 +212,7 @@
 
   test("add model to multiple collections", 10, function() {
     var counter = 0;
-    var e = new Backbone.Linear_Model({id: 10, label : 'e'});
+    var e = new Backbone.Model({id: 10, label : 'e'});
     e.on('add', function(model, collection) {
       counter++;
       equal(e, model);
@@ -239,7 +239,7 @@
   });
 
   test("add model with parse", 1, function() {
-    var Model = Backbone.Linear_Model.extend({
+    var Model = Backbone.Model.extend({
       parse: function(obj) {
         obj.value += 1;
         return obj;
@@ -270,9 +270,9 @@
     col.comparator = function(a, b) {
       return a.get('name') < b.get('name') ? -1 : 1;
     };
-    var tom = new Backbone.Linear_Model({name: 'Tom'});
-    var rob = new Backbone.Linear_Model({name: 'Rob'});
-    var tim = new Backbone.Linear_Model({name: 'Tim'});
+    var tom = new Backbone.Model({name: 'Tom'});
+    var rob = new Backbone.Model({name: 'Rob'});
+    var tim = new Backbone.Model({name: 'Tim'});
     col.add(tom);
     col.add(rob);
     col.add(tim);
@@ -298,16 +298,12 @@
     deepEqual(col.pluck('id'), [1, 2, 3]);
   });
 
-  test("remove", 7, function() {
+  test("remove", 10, function() {
     var removed = null;
-    var otherRemoved = null;
     var result = null;
     col.on('remove', function(model, col, options) {
       removed = model.get('label');
       equal(options.index, 3);
-    });
-    otherCol.on('remove', function(model, col, options) {
-      otherRemoved = true;
     });
     result = col.remove(d);
     equal(removed, 'd');
@@ -317,11 +313,17 @@
     strictEqual(result, undefined);
     equal(col.length, 3);
     equal(col.first(), a);
-    equal(otherRemoved, null);
+    col.off();
+    result = col.remove([c, d]);
+    equal(result.length, 1, 'only returns removed models');
+    equal(result[0], c, 'only returns removed models');
+    result = col.remove([c, b]);
+    equal(result.length, 1, 'only returns removed models');
+    equal(result[0], b, 'only returns removed models');
   });
 
   test("add and remove return values", 13, function() {
-    var Even = Backbone.Linear_Model.extend({
+    var Even = Backbone.Model.extend({
       validate: function(attrs) {
         if (attrs.id % 2 !== 0) return "odd";
       }
@@ -331,7 +333,7 @@
 
     var list = col.add([{id: 2}, {id: 4}], {validate: true});
     equal(list.length, 2);
-    ok(list[0] instanceof Backbone.Linear_Model);
+    ok(list[0] instanceof Backbone.Model);
     equal(list[1], col.last());
     equal(list[1].get('id'), 4);
 
@@ -368,7 +370,7 @@
 
   test("events are unbound on remove", 3, function() {
     var counter = 0;
-    var dj = new Backbone.Linear_Model();
+    var dj = new Backbone.Model();
     var emcees = new Backbone.Collection([dj]);
     emcees.on('change', function(){ counter++; });
     dj.set({name : 'Kool'});
@@ -385,8 +387,8 @@
       title : 'Othello'
     };
     var passed = false;
-    var e = new Backbone.Linear_Model(modelData);
-    var f = new Backbone.Linear_Model(modelData);
+    var e = new Backbone.Model(modelData);
+    var f = new Backbone.Model(modelData);
     f.on('remove', function() {
       passed = true;
     });
@@ -405,7 +407,7 @@
 
   test("remove same model in multiple collection", 16, function() {
     var counter = 0;
-    var e = new Backbone.Linear_Model({id: 5, title: 'Othello'});
+    var e = new Backbone.Model({id: 5, title: 'Othello'});
     e.on('remove', function(model, collection) {
       counter++;
       equal(e, model);
@@ -438,7 +440,7 @@
   });
 
   test("model destroy removes from all collections", 3, function() {
-    var e = new Backbone.Linear_Model({id: 5, title: 'Othello'});
+    var e = new Backbone.Model({id: 5, title: 'Othello'});
     e.sync = function(method, model, options) { options.success(); };
     var colE = new Backbone.Collection([e]);
     var colF = new Backbone.Collection([e]);
@@ -449,7 +451,7 @@
   });
 
   test("Colllection: non-persisted model destroy removes from all collections", 3, function() {
-    var e = new Backbone.Linear_Model({title: 'Othello'});
+    var e = new Backbone.Model({title: 'Othello'});
     e.sync = function(method, model, options) { throw "should not be called"; };
     var colE = new Backbone.Collection([e]);
     var colF = new Backbone.Collection([e]);
@@ -519,7 +521,7 @@
   });
 
   test("create with validate:true enforces validation", 3, function() {
-    var ValidatingModel = Backbone.Linear_Model.extend({
+    var ValidatingModel = Backbone.Model.extend({
       validate: function(attrs) {
         return "fail";
       }
@@ -536,10 +538,10 @@
   });
 
   test("create will pass extra options to success callback", 1, function () {
-    var Model = Backbone.Linear_Model.extend({
+    var Model = Backbone.Model.extend({
       sync: function (method, model, options) {
         _.extend(options, {specialSync: true});
-        return Backbone.Linear_Model.prototype.sync.call(this, method, model, options);
+        return Backbone.Model.prototype.sync.call(this, method, model, options);
       }
     });
 
@@ -559,8 +561,22 @@
 
   });
 
+  test("create with wait:true should not call collection.parse", 0, function() {
+    var Collection = Backbone.Collection.extend({
+      url: '/test',
+      parse: function () {
+        ok(false);
+      }
+    });
+
+    var collection = new Collection;
+
+    collection.create({}, {wait: true});
+    this.ajaxSettings.success();
+  });
+
   test("a failing create returns model with errors", function() {
-    var ValidatingModel = Backbone.Linear_Model.extend({
+    var ValidatingModel = Backbone.Model.extend({
       validate: function(attrs) {
         return "fail";
       }
@@ -589,7 +605,7 @@
   });
 
   test("where and findWhere", 8, function() {
-    var model = new Backbone.Linear_Model({a: 1});
+    var model = new Backbone.Model({a: 1});
     var coll = new Backbone.Collection([
       model,
       {a: 1},
@@ -652,7 +668,7 @@
     equal(col.length, 0);
     equal(resetCount, 4);
 
-    var f = new Backbone.Linear_Model({id: 20, label : 'f'});
+    var f = new Backbone.Model({id: 20, label : 'f'});
     col.reset([undefined, f]);
     equal(col.length, 2);
     equal(resetCount, 5);
@@ -669,14 +685,14 @@
   });
 
   test("same references in reset", function() {
-    var model = new Backbone.Linear_Model({id: 1});
+    var model = new Backbone.Model({id: 1});
     var collection = new Backbone.Collection({id: 1});
     collection.reset(model);
     equal(collection.get(1), model);
   });
 
   test("reset passes caller options", 3, function() {
-    var Model = Backbone.Linear_Model.extend({
+    var Model = Backbone.Model.extend({
       initialize: function(attrs, options) {
         this.model_parameter = options.model_parameter;
       }
@@ -717,7 +733,7 @@
   test("#714: access `model.collection` in a brand new model.", 2, function() {
     var collection = new Backbone.Collection;
     collection.url = '/test';
-    var Model = Backbone.Linear_Model.extend({
+    var Model = Backbone.Model.extend({
       set: function(attrs) {
         equal(attrs.prop, 'value');
         equal(this.collection, collection);
@@ -738,7 +754,7 @@
   });
 
   test("#861, adding models to a collection which do not pass validation, with validate:true", 2, function() {
-    var Model = Backbone.Linear_Model.extend({
+    var Model = Backbone.Model.extend({
       validate: function(attrs) {
         if (attrs.id == 3) return "id can't be 3";
       }
@@ -758,7 +774,7 @@
   test("Invalid models are discarded with validate:true.", 5, function() {
     var collection = new Backbone.Collection;
     collection.on('test', function() { ok(true); });
-    collection.model = Backbone.Linear_Model.extend({
+    collection.model = Backbone.Model.extend({
       validate: function(attrs){ if (!attrs.valid) return 'invalid'; }
     });
     var model = new collection.model({id: 1, valid: true});
@@ -772,7 +788,7 @@
 
   test("multiple copies of the same model", 3, function() {
     var col = new Backbone.Collection();
-    var model = new Backbone.Linear_Model();
+    var model = new Backbone.Model();
     col.add([model, model]);
     equal(col.length, 1);
     col.add([{id: 1}, {id: 1}]);
@@ -787,14 +803,14 @@
   });
 
   test("#1112 - passing options.model sets collection.model", 2, function() {
-    var Model = Backbone.Linear_Model.extend({});
+    var Model = Backbone.Model.extend({});
     var c = new Backbone.Collection([{id: 1}], {model: Model});
     ok(c.model === Model);
     ok(c.at(0) instanceof Model);
   });
 
   test("null and undefined are invalid ids.", 2, function() {
-    var model = new Backbone.Linear_Model({id: 1});
+    var model = new Backbone.Model({id: 1});
     var collection = new Backbone.Collection([model]);
     model.set({id: null});
     ok(!collection.get('null'));
@@ -818,7 +834,7 @@
   });
 
   test("#1355 - `options` is passed to success callbacks", 2, function(){
-    var m = new Backbone.Linear_Model({x:1});
+    var m = new Backbone.Model({x:1});
     var col = new Backbone.Collection();
     var opts = {
       opts: true,
@@ -877,7 +893,7 @@
 
   test("#1447 - create with wait adds model.", 1, function() {
     var collection = new Backbone.Collection;
-    var model = new Backbone.Linear_Model;
+    var model = new Backbone.Model;
     model.sync = function(method, model, options){ options.success(); };
     collection.on('add', function(){ ok(true); });
     collection.create(model, {wait: true});
@@ -934,7 +950,7 @@
     var model = {};
     var Collection = Backbone.Collection.extend({
       url: 'test',
-      model: Backbone.Linear_Model.extend({
+      model: Backbone.Model.extend({
         parse: function(resp) {
           strictEqual(resp, model);
         }
@@ -960,7 +976,7 @@
       namespace : [{id: 1}, {id:2}]
     };
     var Collection = Backbone.Collection.extend({
-      model: Backbone.Linear_Model.extend({
+      model: Backbone.Model.extend({
         parse: function(model) {
           model.name = 'test';
           return model;
@@ -981,7 +997,7 @@
       namespace : [{id: 1}, {id:2}]
     };
     var Collection = Backbone.Collection.extend({
-      model: Backbone.Linear_Model.extend({
+      model: Backbone.Model.extend({
         parse: function(model) {
           model.name = 'test';
           return model;
@@ -1000,7 +1016,7 @@
 
 
   test("Reset includes previous models in triggered event.", 1, function() {
-    var model = new Backbone.Linear_Model();
+    var model = new Backbone.Model();
     var collection = new Backbone.Collection([model])
     .on('reset', function(collection, options) {
       deepEqual(options.previousModels, [model]);
@@ -1009,9 +1025,9 @@
   });
 
   test("set", function() {
-    var m1 = new Backbone.Linear_Model();
-    var m2 = new Backbone.Linear_Model({id: 2});
-    var m3 = new Backbone.Linear_Model();
+    var m1 = new Backbone.Model();
+    var m2 = new Backbone.Model({id: 2});
+    var m3 = new Backbone.Model();
     var c = new Backbone.Collection([m1, m2]);
 
     // Test add/change/remove events
@@ -1056,8 +1072,8 @@
   });
 
   test("set with only cids", 3, function() {
-    var m1 = new Backbone.Linear_Model;
-    var m2 = new Backbone.Linear_Model;
+    var m1 = new Backbone.Model;
+    var m2 = new Backbone.Model;
     var c = new Backbone.Collection;
     c.set([m1, m2]);
     equal(c.length, 2);
@@ -1071,7 +1087,7 @@
     var m1 = { _id: 1 };
     var m2 = { _id: 2 };
     var col = Backbone.Collection.extend({
-      model: Backbone.Linear_Model.extend({
+      model: Backbone.Model.extend({
         idAttribute: '_id'
       })
     });
@@ -1085,7 +1101,7 @@
   });
 
   test("set + merge with default values defined", function() {
-    var Model = Backbone.Linear_Model.extend({
+    var Model = Backbone.Model.extend({
       defaults: {
         key: 'value'
       }
@@ -1103,7 +1119,7 @@
   });
 
   test('merge without mutation', function () {
-    var Model = Backbone.Linear_Model.extend({
+    var Model = Backbone.Model.extend({
       initialize: function (attrs, options) {
         if (attrs.child) {
           this.set('child', new Model(attrs.child, options), options);
@@ -1121,7 +1137,7 @@
   });
 
   test("`set` and model level `parse`", function() {
-    var Model = Backbone.Linear_Model.extend({});
+    var Model = Backbone.Model.extend({});
     var Collection = Backbone.Collection.extend({
       model: Model,
       parse: function (res) { return _.pluck(res.models, 'model'); }
@@ -1137,7 +1153,7 @@
 
   test("`set` data is only parsed once", function() {
     var collection = new Backbone.Collection();
-    collection.model = Backbone.Linear_Model.extend({
+    collection.model = Backbone.Model.extend({
       parse: function (data) {
         equal(data.parsed, void 0);
         data.parsed = true;
@@ -1148,9 +1164,9 @@
   });
 
   test('`set` matches input order in the absence of a comparator', function () {
-    var one = new Backbone.Linear_Model({id: 1});
-    var two = new Backbone.Linear_Model({id: 2});
-    var three = new Backbone.Linear_Model({id: 3});
+    var one = new Backbone.Model({id: 1});
+    var two = new Backbone.Model({id: 2});
+    var three = new Backbone.Model({id: 3});
     var collection = new Backbone.Collection([one, two, three]);
     collection.set([{id: 3}, {id: 2}, {id: 1}]);
     deepEqual(collection.models, [three, two, one]);
@@ -1183,7 +1199,7 @@
 
   test("`set` with non-normal id", function() {
     var Collection = Backbone.Collection.extend({
-      model: Backbone.Linear_Model.extend({idAttribute: '_id'})
+      model: Backbone.Model.extend({idAttribute: '_id'})
     });
     var collection = new Collection({_id: 1});
     collection.set([{_id: 1, a: 1}], {add: false});
@@ -1276,7 +1292,7 @@
   });
 
   test("Attach options to collection.", 2, function() {
-    var Model = Backbone.Linear_Model;
+    var Model = Backbone.Model;
     var comparator = function(){};
 
     var collection = new Backbone.Collection([], {
@@ -1310,10 +1326,10 @@
 
   test("#2612 - nested `parse` works with `Collection#set`", function() {
 
-    var Job = Backbone.Linear_Model.extend({
+    var Job = Backbone.Model.extend({
       constructor: function() {
         this.items = new Items();
-        Backbone.Linear_Model.apply(this, arguments);
+        Backbone.Model.apply(this, arguments);
       },
       parse: function(attrs) {
         this.items.set(attrs.items, {parse: true});
@@ -1321,10 +1337,10 @@
       }
     });
 
-    var Item = Backbone.Linear_Model.extend({
+    var Item = Backbone.Model.extend({
       constructor: function() {
         this.subItems = new Backbone.Collection();
-        Backbone.Linear_Model.apply(this, arguments);
+        Backbone.Model.apply(this, arguments);
       },
       parse: function(attrs) {
         this.subItems.set(attrs.subItems, {parse: true});
@@ -1445,7 +1461,7 @@
 
   test("create with wait, model instance, #3028", 1, function() {
     var collection = new Backbone.Collection();
-    var model = new Backbone.Linear_Model({id: 1});
+    var model = new Backbone.Model({id: 1});
     model.sync = function(){
       equal(this.collection, collection);
     };
@@ -1453,7 +1469,7 @@
   });
 
   test("modelId", function() {
-    var Stooge = Backbone.Linear_Model.extend();
+    var Stooge = Backbone.Model.extend();
     var StoogeCollection = Backbone.Collection.extend({model: Stooge});
 
     // Default to using `Collection::model::idAttribute`.
@@ -1463,8 +1479,8 @@
   });
 
   test('Polymorphic models work with "simple" constructors', function () {
-    var A = Backbone.Linear_Model.extend();
-    var B = Backbone.Linear_Model.extend();
+    var A = Backbone.Model.extend();
+    var B = Backbone.Model.extend();
     var C = Backbone.Collection.extend({
       model: function (attrs) {
         return attrs.type === 'a' ? new A(attrs) : new B(attrs);
@@ -1479,10 +1495,10 @@
   });
 
   test('Polymorphic models work with "advanced" constructors', function () {
-    var A = Backbone.Linear_Model.extend({idAttribute: '_id'});
-    var B = Backbone.Linear_Model.extend({idAttribute: '_id'});
+    var A = Backbone.Model.extend({idAttribute: '_id'});
+    var B = Backbone.Model.extend({idAttribute: '_id'});
     var C = Backbone.Collection.extend({
-      model: Backbone.Linear_Model.extend({
+      model: Backbone.Model.extend({
         constructor: function (attrs) {
           return attrs.type === 'a' ? new A(attrs) : new B(attrs);
         },
@@ -1531,9 +1547,9 @@
   });
 
   test('#3199 - Order changing should trigger a sort', 1, function() {
-      var one = new Backbone.Linear_Model({id: 1});
-      var two = new Backbone.Linear_Model({id: 2});
-      var three = new Backbone.Linear_Model({id: 3});
+      var one = new Backbone.Model({id: 1});
+      var two = new Backbone.Model({id: 2});
+      var three = new Backbone.Model({id: 3});
       var collection = new Backbone.Collection([one, two, three]);
       collection.on('sort', function() {
         ok(true);
@@ -1542,9 +1558,9 @@
   });
 
   test('#3199 - Adding a model should trigger a sort', 1, function() {
-    var one = new Backbone.Linear_Model({id: 1});
-    var two = new Backbone.Linear_Model({id: 2});
-    var three = new Backbone.Linear_Model({id: 3});
+    var one = new Backbone.Model({id: 1});
+    var two = new Backbone.Model({id: 2});
+    var three = new Backbone.Model({id: 3});
     var collection = new Backbone.Collection([one, two, three]);
     collection.on('sort', function() {
       ok(true);
@@ -1553,9 +1569,9 @@
   })
 
   test('#3199 - Order not changing should not trigger a sort', 0, function() {
-    var one = new Backbone.Linear_Model({id: 1});
-    var two = new Backbone.Linear_Model({id: 2});
-    var three = new Backbone.Linear_Model({id: 3});
+    var one = new Backbone.Model({id: 1});
+    var two = new Backbone.Model({id: 2});
+    var three = new Backbone.Model({id: 3});
     var collection = new Backbone.Collection([one, two, three]);
     collection.on('sort', function() {
       ok(false);
@@ -1603,6 +1619,21 @@
     var collection = new Backbone.Collection([{id: 1}, {id: 2}]);
     collection.on('update', function() { ok(false); });
     collection.set([{id: 1}, {id: 2}]);
+  });
+
+  test("#3610 - invoke collects arguments", 3, function() {
+    var Model = Backbone.Model.extend({
+        method: function(a, b, c) {
+            equal(a, 1);
+            equal(b, 2);
+            equal(c, 3);
+        }
+    });
+    var Collection = Backbone.Collection.extend({
+        model: Model
+    });
+    var collection = new Collection([{id: 1}]);
+    collection.invoke('method', 1, 2, 3);
   });
 
 })();
