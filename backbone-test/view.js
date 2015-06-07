@@ -357,7 +357,7 @@
     });
 
     var view = new View({
-      model: new Backbone.Model,
+      model: new Backbone.Linear_Model,
       collection: new Backbone.Collection
     });
 
