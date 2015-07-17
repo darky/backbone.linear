@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "backbone"         : "1.2.1",
-    "chai"             : "3.0.0",
+    "chai"             : "3.1.0",
     "jquery"           : "1.11.3",
     "jquery.ajax.fake" : "0.5.2",
     "mocha"            : "2.2.5",
