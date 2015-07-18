@@ -57,23 +57,23 @@ Then you save it back to server, it transforms backward to:
 
 ## Simple using
 
-All similar `Backbone`, only using `Backbone.Linear_Model` class
+All similar `Backbone`, only using `Backbone.LinearModel` class
 
 ```javascript
-var My_Linear_Model_Class = Backbone.Linear_Model.extend(
+var MyLinearModelClass = Backbone.LinearModel.extend(
     // bla-bla
 )
 ```
     
 ## Extend using
 
-You can define `flat_options` settings to manipulate server <-> client transform behavior:
+You can define `flatOptions` settings (object or function, that return object) to manipulate server <-> client transform behavior:
 
 ### delimiter (default: ".")
 
 ```javascript
-var My_Linear_Model_Class = Backbone.Linear_Model.extend({
-    flat_options : {
+var MyLinearModelClass = Backbone.LinearModel.extend({
+    flatOptions : {
         delimiter : "-"
     }
 });
@@ -101,7 +101,7 @@ Transforms to:
 ```json
 {
     "Cats-Boris-age": 3,
-    "Cats-Boris-weight": 3,
+    "Cats-Boris-weight": 4,
     "Cats-Milla-age": 1,
     "Cats-Milla-weight": 2
 }
@@ -147,8 +147,8 @@ Transforms with preservation array structure:
 Use `safe : false`:
 
 ```javascript
-var My_Linear_Model_Class = Backbone.Linear_Model.extend({
-    flat_options : {
+var MyLinearModelClass = Backbone.LinearModel.extend({
+    flatOptions : {
         safe : false
     }
 });
@@ -170,8 +170,8 @@ And server response will be with objectify arrays:
 ### object (default: false)
 
 ```javascript
-var My_Linear_Model_Class = Backbone.Linear_Model.extend({
-    flat_options : {
+var MyLinearModelClass = Backbone.LinearModel.extend({
+    flatOptions : {
         object : true
     }
 });
@@ -235,8 +235,8 @@ Instead:
 ### overwrite (default: false)
 
 ```javascript
-var My_Linear_Model_Class = Backbone.Linear_Model.extend({
-    flat_options : {
+var MyLinearModelClass = Backbone.LinearModel.extend({
+    flatOptions : {
         overwrite : true
     }
 });
@@ -279,12 +279,54 @@ Instead:
 }
 ```
 
-### force_array (default: undefined)
+### maxDepth (default: undefined)
 
 ```javascript
-var My_Linear_Model_Class = Backbone.Linear_Model.extend({
-    flat_options : {
-        force_array : [
+var MyLinearModelClass = Backbone.LinearModel.extend({
+    flatOptions : {
+        maxDepth : 2
+    }
+});
+```
+
+Server response:
+
+```json
+{
+    "Cats": {
+        "Boris": {
+            "age": 3,
+            "weight": 4
+        },
+        "Milla": {
+            "age": 1,
+            "weight": 2
+        }
+    }
+}
+```
+    
+Transforms to:
+
+```json
+{
+    "Cats.Boris": {
+        "age": 3,
+        "weight": 4
+    },
+    "Cats.Milla": {
+        "age": 1,
+        "weight": 2
+    }
+}
+```
+
+### forceArray (default: undefined)
+
+```javascript
+var MyLinearModelClass = Backbone.LinearModel.extend({
+    flatOptions : {
+        forceArray : [
             "Cats.Boris.age",
             "Cats.Boris.eyes",
             "Cats.Boris.toys",
@@ -332,15 +374,15 @@ Guarantees the creation of array:
 }
 ```
     
-**Note: When using `force_array` - option `safe` force set to `true`**
+**Note: When using `forceArray` - option `safe` force set to `true`**
 
 ## Helpers
 
 You can manually flatten, unflatten objects via static helpers:
 
 ```javascript
-Backbone.Linear_Model.flatten(target, options);
-Backbone.Linear_Model.unflatten(target, options);
+Backbone.LinearModel.flatten(target, options);
+Backbone.LinearModel.unflatten(target, options);
 ```
 
 As options you can use `delimiter`, `safe`, `object`, that described above
