@@ -6,7 +6,6 @@ var gulp = require("gulp"),
   browserify = require("browserify"),
   coffee = require("gulp-coffee"),
   coffeelint = require("gulp-coffeelint"),
-  exec = require("child_process").exec,
   fs = require("fs"),
   mocha = require("gulp-mocha"),
   mochaPhantomjs = require("gulp-mocha-phantomjs"),
@@ -21,7 +20,6 @@ gulp.task("default", ["test", "build"]);
 gulp.task("test", [
   "test-flat",
   "test-backbone",
-  "test-backbone-extend",
   "test-own"
 ]);
 gulp.task("build", ["lint", "compile"]);
@@ -41,20 +39,6 @@ gulp.task("test-flat", () => {
 gulp.task("test-backbone", () => {
   gulp.src("backbone-test/index.html")
   .pipe(qunit());
-});
-
-gulp.task("test-backbone-extend-pre", () => {
-  gulp.src("backbone-test/model.coffee")
-  .pipe(coffee())
-  .pipe(gulp.dest("tmp/"));
-});
-
-gulp.task("test-backbone-extend", ["test-backbone-extend-pre"], (cb) => {
-  exec("node tmp/model.js", (err, stdout, stderr) => {
-    console.log(stdout);
-    console.log(stderr);
-    cb(err);
-  });
 });
 
 gulp.task("test-own", ["compile"], () => {
