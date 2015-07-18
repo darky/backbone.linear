@@ -15,7 +15,7 @@
     "split"
   ],
   "repo"          : "darrrk/backbone.linear",
-  "main"          : "backbone.linear.js",
+  "main"          : "dist/backbone.linear.js",
   "scripts"       : ["backbone.linear.js"],
   "license"       : "MIT"
 }

@@ -58,11 +58,11 @@ gulp.task("lint", function () {
 gulp.task("compile", function () {
   return browserify({debug : true, detectGlobals : false, standalone : "Backbone.LinearModel"})
     .transform(babelify)
-    .require("./backbone.linear.es", {entry : true})
+    .require("./src/backbone.linear.js", {entry : true})
     .exclude("backbone")
     .exclude("underscore")
     .bundle()
-    .pipe(fs.createWriteStream("backbone.linear.js"));
+    .pipe(fs.createWriteStream("./dist/backbone.linear.js"));
 });
 
 

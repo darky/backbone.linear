@@ -1,7 +1,7 @@
 var assert = require('assert')
-  , backbone_linear = require('../backbone.linear')
-  , flatten = backbone_linear.flatten
-  , unflatten = backbone_linear.unflatten
+  , BackboneLinear = require('../dist/backbone.linear')
+  , flatten = BackboneLinear.flatten
+  , unflatten = BackboneLinear.unflatten
 
 var primitives = {
     String: 'good morning'
