@@ -26,7 +26,7 @@ gulp.task("build", ["lint", "compile"]);
 /* **********
      TEST
 ********** */
-gulp.task("test-flat", () => {
+gulp.task("test-flat", function () {
   gulp.src("flat-test/test.js")
   .pipe(mocha({
     reporter : "nyan",
@@ -34,12 +34,12 @@ gulp.task("test-flat", () => {
   }));
 });
         
-gulp.task("test-backbone", () => {
+gulp.task("test-backbone", function () {
   gulp.src("backbone-test/index.html")
   .pipe(qunit());
 });
 
-gulp.task("test-own", ["compile"], () => {
+gulp.task("test-own", ["compile"], function () {
   gulp.src("test/index.html")
   .pipe(mochaPhantomjs());
 });
@@ -48,13 +48,13 @@ gulp.task("test-own", ["compile"], () => {
 /* ************
      BUILD
 ************ */
-gulp.task("lint", () => {
+gulp.task("lint", function () {
   gulp.src(["*.coffee", "test/*.coffee"])
   .pipe(coffeelint())
   .pipe(coffeelint.reporter());
 });
     
-gulp.task("compile", () => {
+gulp.task("compile", function () {
   return browserify({debug : true, detectGlobals : false, standalone : "Backbone.LinearModel"})
     .transform(babelify)
     .require("./backbone.linear.es", {entry : true})
@@ -68,6 +68,6 @@ gulp.task("compile", () => {
 /* *********
      DEV
 ********* */
-gulp.task("dev", () => {
+gulp.task("dev", function () {
   gulp.watch(["*.coffee", "test/*.coffee"], ["build"]);
 });
