@@ -313,4 +313,21 @@ describe("Backbone.Linear test api", function () {
       }
     });
   });
+
+  it("server response with `maxDepth`", function (done) {
+    this.linearModel.flatOptions = {maxDepth: 2};
+    this.linearModel.fetch({
+      fake: true,
+      wait: true,
+
+      success: function (model) {
+        var attrs = model.attributes;
+        chai.expect(attrs["Cats.Boris"].age).equal(3);
+        chai.expect(attrs["Cats.Boris"].weight).equal(4);
+        chai.expect(attrs["Cats.Milla"].age).equal(1);
+        chai.expect(attrs["Cats.Milla"].weight).equal(2);
+        done();
+      }
+    });
+  });
 });
