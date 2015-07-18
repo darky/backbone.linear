@@ -1,6 +1,7 @@
 "use strict";
 
-var factory = (_, Backbone) => {
+var global = typeof global !== "undefined" ? global : typeof window !== "undefined" ? window : {},
+  factory = (_, Backbone) => {
 
     /* *****************************
          BACKBONE-LINEAR-PRIVATE

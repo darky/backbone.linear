@@ -82,12 +82,11 @@ gulp.task("compile", () => {
   }))
   .pipe(gulp.dest("tmp/test/"));
 
-  return browserify({debug : true, standalone : "Backbone.LinearModel"})
+  return browserify({debug : true, detectGlobals : false, standalone : "Backbone.LinearModel"})
     .transform(babelify)
     .require("./backbone.linear.es", {entry : true})
     .exclude("backbone")
     .exclude("underscore")
-    .ignore("buffer")
     .bundle()
     .pipe(fs.createWriteStream("backbone.linear.js"));
 });
