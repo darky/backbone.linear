@@ -55,7 +55,7 @@ gulp.task("lint", function () {
 });
     
 gulp.task("compile", function () {
-  return browserify({debug : true, detectGlobals : false, standalone : "Backbone.LinearModel"})
+  return browserify({detectGlobals : false, standalone : "Backbone.LinearModel"})
     .require("./src/backbone.linear.js", {entry : true})
     .exclude("backbone")
     .exclude("underscore")
