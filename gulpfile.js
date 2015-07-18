@@ -1,9 +1,13 @@
+/* eslint-env node */
+
+"use strict";
+
 /* *****************
      DEFINE-VARS
 ***************** */
 var gulp = require("gulp"),
   browserify = require("browserify"),
-  coffeelint = require("gulp-coffeelint"),
+  eslint = require("gulp-eslint"),
   fs = require("fs"),
   mocha = require("gulp-mocha"),
   mochaPhantomjs = require("gulp-mocha-phantomjs"),
@@ -27,21 +31,18 @@ gulp.task("build", ["lint", "compile"]);
      TEST
 ********** */
 gulp.task("test-flat", function () {
-  return gulp.src("flat-test/test.js")
-    .pipe(mocha({
-      reporter : "nyan",
-      ui       : "tdd"   
-    }));
+  return gulp.src("flat-test/test.js").pipe(mocha({
+    reporter: "nyan",
+    ui: "tdd"
+  }));
 });
-        
+
 gulp.task("test-backbone", function () {
-  return gulp.src("backbone-test/index.html")
-    .pipe(qunit());
+  return gulp.src("backbone-test/index.html").pipe(qunit());
 });
 
 gulp.task("test-own", ["compile"], function () {
-  return gulp.src("test/index.html")
-    .pipe(mochaPhantomjs());
+  return gulp.src("test/index.html").pipe(mochaPhantomjs());
 });
 
 
@@ -49,14 +50,15 @@ gulp.task("test-own", ["compile"], function () {
      BUILD
 ************ */
 gulp.task("lint", function () {
-  return gulp.src(["*.coffee", "test/*.coffee"])
-    .pipe(coffeelint())
-    .pipe(coffeelint.reporter());
+  return gulp.src(["*.js", "src/*.js", "test/*.js"])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failOnError());
 });
-    
+
 gulp.task("compile", function () {
-  return browserify({detectGlobals : false, standalone : "Backbone.LinearModel"})
-    .require("./src/backbone.linear.js", {entry : true})
+  return browserify({detectGlobals: false, standalone: "Backbone.LinearModel"})
+    .require("./src/backbone.linear.js", {entry: true})
     .exclude("backbone")
     .exclude("underscore")
     .bundle()

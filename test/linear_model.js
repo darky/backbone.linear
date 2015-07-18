@@ -1,4 +1,8 @@
-describe("Backbone.Linear test api", function(){
+/* eslint-env jquery, mocha */
+/* global Backbone, chai */
+
+describe("Backbone.Linear test api", function () {
+  "use strict";
 
   /* ***************************
        FAKE-SERVER-RESPONSES
@@ -18,7 +22,7 @@ describe("Backbone.Linear test api", function(){
             weight: 2
           }
         }
-      }
+      };
     }
   });
 
@@ -35,7 +39,7 @@ describe("Backbone.Linear test api", function(){
             ]
           }
         }
-      }
+      };
     }
   });
 
@@ -49,7 +53,7 @@ describe("Backbone.Linear test api", function(){
             age: 3,
             weight: 3,
             toys: {
-              "item" : "ball"
+              "item": "ball"
             },
             eyes: [
               "left_eye",
@@ -61,7 +65,7 @@ describe("Backbone.Linear test api", function(){
             weight: 2
           }
         }
-      }
+      };
     }
   });
 
@@ -69,12 +73,12 @@ describe("Backbone.Linear test api", function(){
   /* ************
        DEFINE
   ************ */
-  beforeEach(function(){
+  beforeEach(function () {
     var LinearModelClass = Backbone.LinearModel.extend({
-      urlRoot : "/fake_data"
+      urlRoot: "/fake_data"
     });
 
-    this.linearModel = new LinearModelClass;
+    this.linearModel = new LinearModelClass();
     this.linearModel.set("id", "simple");
   });
 
@@ -84,10 +88,10 @@ describe("Backbone.Linear test api", function(){
   *********** */
   it("simple parse from server", function (done) {
     this.linearModel.fetch({
-      fake : true,
-      wait : 30,
+      fake: true,
+      wait: 30,
 
-      success : function (model) {
+      success: function (model) {
         var attrs = model.attributes;
 
         chai.expect(attrs).have.property("Cats.Boris.age", 3);
@@ -102,17 +106,17 @@ describe("Backbone.Linear test api", function(){
 
   it("simple send to server", function (done) {
     this.linearModel.set({
-      "Cats.Boris.age"    : 3,
-      "Cats.Boris.weight" : 4,
-      "Cats.Milla.age"    : 1,
-      "Cats.Milla.weight" : 2
+      "Cats.Boris.age": 3,
+      "Cats.Boris.weight": 4,
+      "Cats.Milla.age": 1,
+      "Cats.Milla.weight": 2
     });
 
     this.linearModel.save(null, {
-      fake : true,
-      wait : 30,
+      fake: true,
+      wait: 30,
 
-      success : function (model, mirrored) {
+      success: function (model, mirrored) {
         chai.expect(mirrored).have.deep.property("Cats.Boris.age", 3);
         chai.expect(mirrored).have.deep.property("Cats.Boris.weight", 4);
         chai.expect(mirrored).have.deep.property("Cats.Milla.age", 1);
@@ -124,13 +128,13 @@ describe("Backbone.Linear test api", function(){
   });
 
   it("parse by `delimiter` from server", function (done) {
-    this.linearModel.flatOptions = {delimiter : "-"};
+    this.linearModel.flatOptions = {delimiter: "-"};
 
     this.linearModel.fetch({
-      fake : true,
-      wait : 30,
+      fake: true,
+      wait: 30,
 
-      success : function (model) {
+      success: function (model) {
         var attrs = model.attributes;
 
         chai.expect(attrs).have.property("Cats-Boris-age", 3);
@@ -145,18 +149,18 @@ describe("Backbone.Linear test api", function(){
 
   it("send to server with `delimiter`", function (done) {
     this.linearModel.set({
-      "Cats-Boris-age"    : 3,
-      "Cats-Boris-weight" : 4,
-      "Cats-Milla-age"    : 1,
-      "Cats-Milla-weight" : 2
+      "Cats-Boris-age": 3,
+      "Cats-Boris-weight": 4,
+      "Cats-Milla-age": 1,
+      "Cats-Milla-weight": 2
     });
-    this.linearModel.flatOptions = {delimiter : "-"};
+    this.linearModel.flatOptions = {delimiter: "-"};
 
     this.linearModel.save(null, {
-      fake : true,
-      wait : 30,
+      fake: true,
+      wait: 30,
 
-      success : function (model, mirrored) {
+      success: function (model, mirrored) {
         chai.expect(mirrored).have.deep.property("Cats.Boris.age", 3);
         chai.expect(mirrored).have.deep.property("Cats.Boris.weight", 4);
         chai.expect(mirrored).have.deep.property("Cats.Milla.age", 1);
@@ -169,12 +173,12 @@ describe("Backbone.Linear test api", function(){
 
   it("parse without `safe` from server", function (done) {
     this.linearModel.set("id", "safe");
-    this.linearModel.flatOptions = {safe : false};
+    this.linearModel.flatOptions = {safe: false};
     this.linearModel.fetch({
-      fake : true,
-      wait : 30,
+      fake: true,
+      wait: 30,
 
-      success : function (model) {
+      success: function (model) {
         var attrs = model.attributes;
 
         chai.expect(attrs).have.property("Cats.Boris.toys.0", "ball");
@@ -188,10 +192,10 @@ describe("Backbone.Linear test api", function(){
   it("parse by `safe` from server", function (done) {
     this.linearModel.set("id", "safe");
     this.linearModel.fetch({
-      fake : true,
-      wait : 30,
+      fake: true,
+      wait: 30,
 
-      success : function (model) {
+      success: function (model) {
         chai.expect(model.attributes["Cats.Boris.toys"])
         .have.members(["ball", "mouse"]);
 
@@ -202,14 +206,14 @@ describe("Backbone.Linear test api", function(){
 
   it("send to server without `object`", function (done) {
     this.linearModel.set({
-      "Cats.Boris.toys.0" : "ball",
-      "Cats.Boris.toys.1" : "mouse"
+      "Cats.Boris.toys.0": "ball",
+      "Cats.Boris.toys.1": "mouse"
     });
     this.linearModel.save(null, {
-      fake : true,
-      wait : 30,
+      fake: true,
+      wait: 30,
 
-      success : function (model, mirrored) {
+      success: function (model, mirrored) {
         chai.expect(mirrored.Cats.Boris.toys)
         .have.members(["ball", "mouse"]);
 
@@ -220,15 +224,15 @@ describe("Backbone.Linear test api", function(){
 
   it("send to server with `object`", function (done) {
     this.linearModel.set({
-      "Cats.Boris.toys.0" : "ball",
-      "Cats.Boris.toys.1" : "mouse"
+      "Cats.Boris.toys.0": "ball",
+      "Cats.Boris.toys.1": "mouse"
     });
-    this.linearModel.flatOptions = {object : true};
+    this.linearModel.flatOptions = {object: true};
     this.linearModel.save(null, {
-      fake : true,
-      wait : 30,
+      fake: true,
+      wait: 30,
 
-      success : function (model, mirrored) {
+      success: function (model, mirrored) {
         var object = mirrored.Cats.Boris.toys;
 
         chai.expect(object).a("object");
@@ -244,7 +248,7 @@ describe("Backbone.Linear test api", function(){
   it("`force_array` server repsonse", function (done) {
     this.linearModel.set("id", "force_array");
     this.linearModel.flatOptions = {
-      forceArray : [
+      forceArray: [
         "Cats.Boris.age",
         "Cats.Boris.eyes",
         "Cats.Boris.toys",
@@ -252,10 +256,10 @@ describe("Backbone.Linear test api", function(){
       ]
     };
     this.linearModel.fetch({
-      fake : true,
-      wait : 30,
+      fake: true,
+      wait: 30,
 
-      success : function (model) {
+      success: function (model) {
         var attrs = model.attributes;
 
         chai.expect(attrs["Cats.Boris.age"]).a("array");
@@ -268,7 +272,7 @@ describe("Backbone.Linear test api", function(){
         .have.members(["left_eye", "right_eye"]);
         chai.expect(attrs["Cats.Boris.toys"][0])
         .have.property("item", "ball");
-        chai.expect(attrs["Cats.Milla.toys"]).be.empty;
+        chai.expect(attrs["Cats.Milla.toys"]).length(0);
 
         done();
       }
@@ -277,14 +281,14 @@ describe("Backbone.Linear test api", function(){
 
   it("send to server without `overwrite`", function (done) {
     this.linearModel.set({
-      "Cats.Boris.toys"   : "exists",
-      "Cats.Boris.toys.0" : "ball"
+      "Cats.Boris.toys": "exists",
+      "Cats.Boris.toys.0": "ball"
     });
     this.linearModel.save(null, {
-      fake : true,
-      wait : true,
+      fake: true,
+      wait: true,
 
-      success : function (model, mirrored) {
+      success: function (model, mirrored) {
         chai.expect(mirrored.Cats.Boris.toys)
         .equal("exists");
         done();
@@ -294,20 +298,19 @@ describe("Backbone.Linear test api", function(){
 
   it("send to server with `overwrite`", function (done) {
     this.linearModel.set({
-      "Cats.Boris.toys"   : "exists",
-      "Cats.Boris.toys.0" : "ball"
+      "Cats.Boris.toys": "exists",
+      "Cats.Boris.toys.0": "ball"
     });
-    this.linearModel.flatOptions = {overwrite : true};
+    this.linearModel.flatOptions = {overwrite: true};
     this.linearModel.save(null, {
-      fake : true,
-      wait : true,
+      fake: true,
+      wait: true,
 
-      success : function (model, mirrored) {
+      success: function (model, mirrored) {
         chai.expect(mirrored.Cats.Boris.toys[0])
-        .equal("ball")
+        .equal("ball");
         done();
       }
     });
   });
-
 });
