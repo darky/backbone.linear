@@ -32,79 +32,80 @@ var factory = (_, Backbone) => {
           }
         });
         return object;
-      };
+      },
 
-    class LinearModel extends Backbone.Model {
+      LinearModel = Backbone.Model.extend({
+        /* ********************
+             BACKBONE 1.2.1
+        ******************** */
+        parse (resp, options) {
+          var parentCall = this.constructor.__super__.parse(resp, options),
+            flatOptions, result, hasForceArray;
+          if (parentCall == null || parentCall === "" || parentCall instanceof this.constructor) {
+            return parentCall;
+          }
+          flatOptions = _.clone(_.result(this, "flatOptions"));
+          hasForceArray = _.isArray(flatOptions.forceArray);
+          if (hasForceArray) {
+            flatOptions.safe = true;
+          }
+          result = LinearModel.flatten(parentCall, flatOptions);
+          if (hasForceArray) {
+            return transformToArray(result, flatOptions.forceArray);
+          } else {
+            return result;
+          }
+        },
 
-      /* ****************
-           FLAT 1.6.0
-      **************** */
-      static flatten (target, opts = {}) {
-        if (opts.safe == null) {
-          opts.safe = true;
-        }
-        return flat.flatten(target, opts);
-      }
+        sync (method, model, options = {}) {
+          if (method === "create" || method === "update" || method === "patch") {
+            let opts = _.extend({}, options,
+              method === "patch" ? {attrs : LinearModel.unflatten(
+                options.attrs,
+                _.result(this, "flatOptions")
+              )} : {unflat : true}
+            );
+            return this.constructor.__super__.sync(method, model, opts);
+          } else {
+            return this.constructor.__super__.sync(method, model, options);
+          }
+        },
 
-      static unflatten (target, opts = {}) {
-        return flat.unflatten(target, opts);
-      }
-
-
-      /* ********************
-           BACKBONE 1.2.1
-      ******************** */
-      parse (resp, options) {
-        var parentCall = super.parse(resp, options), flatOptions, result, hasForceArray;
-        if (parentCall == null || parentCall === "" || parentCall instanceof this.constructor) {
-          return parentCall;
-        }
-        flatOptions = _.clone(_.result(this, "flatOptions"));
-        hasForceArray = _.isArray(flatOptions.forceArray);
-        if (hasForceArray) {
-          flatOptions.safe = true;
-        }
-        result = LinearModel.flatten(parentCall, flatOptions);
-        if (hasForceArray) {
-          return transformToArray(result, flatOptions.forceArray);
-        } else {
-          return result;
-        }
-      }
-
-      sync (method, model, options = {}) {
-        if (method === "create" || method === "update" || method === "patch") {
-          let opts = _.extend({}, options,
-            method === "patch" ? {attrs : LinearModel.unflatten(
-              options.attrs,
+        toJSON (options = {}) {
+          if (options.unflat) {
+            return LinearModel.unflatten(
+              this.constructor.__super__.toJSON(options),
               _.result(this, "flatOptions")
-            )} : {unflat : true}
-          );
-          return super.sync(method, model, opts);
-        } else {
-          return super.sync(method, model, options);
+            );
+          } else {
+            this.constructor.__super__.toJSON(options);
+          }
+        },
+
+
+        /* ****************************
+             BACKBONE-LINEAR-PUBLIC
+        **************************** */
+        flatOptions () {
+          return {safe : true};
         }
-      }
 
-      toJSON (options = {}) {
-        if (options.unflat) {
-          return LinearModel.unflatten(
-            super.toJSON(options),
-            _.result(this, "flatOptions")
-          );
-        } else {
-          super.toJSON(options);
+      }, {
+        /* ****************
+             FLAT 1.6.0
+        **************** */
+        flatten (target, opts = {}) {
+          if (opts.safe == null) {
+            opts.safe = true;
+          }
+          return flat.flatten(target, opts);
+        },
+
+        unflatten (target, opts = {}) {
+          return flat.unflatten(target, opts);
         }
-      }
 
-
-      /* ****************************
-           BACKBONE-LINEAR-PUBLIC
-      **************************** */
-      flatOptions () {
-        return {safe : true};
-      }
-    }
+      });
 
     return Backbone.LinearModel = LinearModel;
   };
