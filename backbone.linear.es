@@ -39,7 +39,7 @@ var factory = (_, Backbone) => {
              BACKBONE 1.2.1
         ******************** */
         parse (resp, options) {
-          var parentCall = this.constructor.__super__.parse(resp, options),
+          var parentCall = LinearModel.__super__.parse.call(this, resp, options),
             flatOptions, result, hasForceArray;
           if (parentCall == null || parentCall === "" || parentCall instanceof this.constructor) {
             return parentCall;
@@ -65,20 +65,20 @@ var factory = (_, Backbone) => {
                 _.result(this, "flatOptions")
               )} : {unflat : true}
             );
-            return this.constructor.__super__.sync(method, model, opts);
+            return LinearModel.__super__.sync.call(this, method, model, opts);
           } else {
-            return this.constructor.__super__.sync(method, model, options);
+            return LinearModel.__super__.sync.call(this, method, model, options);
           }
         },
 
         toJSON (options = {}) {
           if (options.unflat) {
             return LinearModel.unflatten(
-              this.constructor.__super__.toJSON(options),
+              LinearModel.__super__.toJSON.call(this, options),
               _.result(this, "flatOptions")
             );
           } else {
-            this.constructor.__super__.toJSON(options);
+            return LinearModel.__super__.toJSON.call(this, options);
           }
         },
 
