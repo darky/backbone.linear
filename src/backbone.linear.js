@@ -1,24 +1,28 @@
 "use strict";
 
-var global = typeof global !== "undefined" ? global : typeof window !== "undefined" ? window : {},
-  factory = (_, Backbone) => {
+var _, Backbone,
+  global = typeof global !== "undefined" ? global : typeof window !== "undefined" ? window : {},
+  factory = function (_, Backbone) {
 
     /* *****************************
          BACKBONE-LINEAR-PRIVATE
     ***************************** */
     var flat = require("flat"),
-      transformToArray = (object, forceArray) => {
-        _.each(forceArray, (path) => {
+      transformToArray = function (object, forceArray) {
+        var objInPath;
+        _.each(forceArray, function (path) {
           if (_.isArray(object[path])) {
             return;
           } else if (object[path] != null) {
             object[path] = [object[path]];
           } else {
-            let objInPath = {};
+            objInPath = {};
             object = _.chain(object)
-              .pairs().map(([key, val]) => {
-                if (key.match(RegExp(`^${path}`))) {
-                  objInPath[`${key.match(/\.(\w+)$/)[1]}`] = val;
+              .pairs().map(function (pair) {
+                var key = pair[0],
+                  val = pair[1];
+                if (key.match(RegExp("^" + path))) {
+                  objInPath[key.match(/\.(\w+)$/)[1]] = val;
                   return null;
                 } else {
                   return [key, val];
@@ -39,7 +43,7 @@ var global = typeof global !== "undefined" ? global : typeof window !== "undefin
         /* ********************
              BACKBONE 1.2.1
         ******************** */
-        parse (resp, options) {
+        parse : function (resp, options) {
           var parentCall = LinearModel.__super__.parse.call(this, resp, options),
             flatOptions, result, hasForceArray;
           if (parentCall == null || parentCall === "" || parentCall instanceof this.constructor) {
@@ -58,9 +62,13 @@ var global = typeof global !== "undefined" ? global : typeof window !== "undefin
           }
         },
 
-        sync (method, model, options = {}) {
+        sync : function (method, model, options) {
+          var opts;
+          if (options == null) {
+            options = {};
+          }
           if (method === "create" || method === "update" || method === "patch") {
-            let opts = _.extend({}, options,
+            opts = _.extend({}, options,
               method === "patch" ? {attrs : LinearModel.unflatten(
                 options.attrs,
                 _.result(this, "flatOptions")
@@ -72,7 +80,10 @@ var global = typeof global !== "undefined" ? global : typeof window !== "undefin
           }
         },
 
-        toJSON (options = {}) {
+        toJSON : function (options) {
+          if (options == null) {
+            options = {};
+          }
           if (options.unflat) {
             return LinearModel.unflatten(
               LinearModel.__super__.toJSON.call(this, options),
@@ -87,7 +98,7 @@ var global = typeof global !== "undefined" ? global : typeof window !== "undefin
         /* ****************************
              BACKBONE-LINEAR-PUBLIC
         **************************** */
-        flatOptions () {
+        flatOptions : function () {
           return {safe : true};
         }
 
@@ -95,14 +106,20 @@ var global = typeof global !== "undefined" ? global : typeof window !== "undefin
         /* ****************
              FLAT 1.6.0
         **************** */
-        flatten (target, opts = {}) {
+        flatten : function (target, opts) {
+          if (opts == null) {
+            opts = {};
+          }
           if (opts.safe == null) {
             opts.safe = true;
           }
           return flat.flatten(target, opts);
         },
 
-        unflatten (target, opts = {}) {
+        unflatten : function (target, opts) {
+          if (opts == null) {
+            opts = {};
+          }
           return flat.unflatten(target, opts);
         }
 
@@ -112,11 +129,11 @@ var global = typeof global !== "undefined" ? global : typeof window !== "undefin
   };
 
 if (typeof define === "function" && define.amd) {
-  define(["underscore", "backbone"], (_, Backbone) => {
+  define(["underscore", "backbone"], function (_, Backbone) {
     global.Backbone.LinearModel = factory(_, Backbone);
   });
 } else if (module != null && module.exports) {
-  let _ = global._ || require("underscore"),
-    Backbone = global.Backbone || require("backbone");
+  _ = global._ || require("underscore"),
+  Backbone = global.Backbone || require("backbone");
   module.exports = factory(_, Backbone);
 }

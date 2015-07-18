@@ -2,7 +2,6 @@
      DEFINE-VARS
 ***************** */
 var gulp = require("gulp"),
-  babelify = require("babelify"),
   browserify = require("browserify"),
   coffeelint = require("gulp-coffeelint"),
   fs = require("fs"),
@@ -57,7 +56,6 @@ gulp.task("lint", function () {
     
 gulp.task("compile", function () {
   return browserify({debug : true, detectGlobals : false, standalone : "Backbone.LinearModel"})
-    .transform(babelify)
     .require("./src/backbone.linear.js", {entry : true})
     .exclude("backbone")
     .exclude("underscore")
