@@ -49,20 +49,20 @@ describe "Backbone.Linear test api", ->
     #    DEFINE
     # ************
     beforeEach ->
-        class Linear_Model_Class extends Backbone.Linear_Model
+        class LinearModelClass extends Backbone.LinearModel
 
             urlRoot : "/fake_data"
 
 
-        @linear_model = new Linear_Model_Class
-        @linear_model.set "id", "simple"
+        @linearModel = new LinearModelClass
+        @linearModel.set "id", "simple"
 
 
     # ***********
     #    TESTS
     # ***********
     it "simple parse from server", (done)->
-        @linear_model.fetch
+        @linearModel.fetch
             fake : true
             wait : 30
             
@@ -78,13 +78,13 @@ describe "Backbone.Linear test api", ->
                 
                 
     it "simple send to server", (done)->
-        @linear_model.set
+        @linearModel.set
             "Cats.Boris.age"    : 3
             "Cats.Boris.weight" : 4
             "Cats.Milla.age"    : 1
             "Cats.Milla.weight" : 2
             
-        @linear_model.save null,
+        @linearModel.save null,
             fake : true
             wait : 30
             
@@ -98,9 +98,9 @@ describe "Backbone.Linear test api", ->
                 
                 
     it "parse by `delimiter` from server", (done)->
-        @linear_model.flat_options = delimiter : "-"
+        @linearModel.flatOptions = delimiter : "-"
         
-        @linear_model.fetch
+        @linearModel.fetch
             fake : true
             wait : 30
             
@@ -116,14 +116,14 @@ describe "Backbone.Linear test api", ->
                 
                 
     it "send to server with `delimiter`", (done)->
-        @linear_model.set
+        @linearModel.set
             "Cats-Boris-age"    : 3
             "Cats-Boris-weight" : 4
             "Cats-Milla-age"    : 1
             "Cats-Milla-weight" : 2
-        @linear_model.flat_options = delimiter : "-"
+        @linearModel.flatOptions = delimiter : "-"
         
-        @linear_model.save null,
+        @linearModel.save null,
             fake : true
             wait : 30
             
@@ -137,9 +137,9 @@ describe "Backbone.Linear test api", ->
                 
                 
     it "parse without `safe` from server", (done)->
-        @linear_model.set "id", "safe"
-        @linear_model.flat_options = safe : false
-        @linear_model.fetch
+        @linearModel.set "id", "safe"
+        @linearModel.flatOptions = safe : false
+        @linearModel.fetch
             fake : true
             wait : 30
             
@@ -153,8 +153,8 @@ describe "Backbone.Linear test api", ->
                 
                 
     it "parse by `safe` from server", (done)->
-        @linear_model.set "id", "safe"
-        @linear_model.fetch
+        @linearModel.set "id", "safe"
+        @linearModel.fetch
             fake : true
             wait : 30
             
@@ -166,10 +166,10 @@ describe "Backbone.Linear test api", ->
                 
                 
     it "send to server without `object`", (done)->
-        @linear_model.set
+        @linearModel.set
             "Cats.Boris.toys.0" : "ball"
             "Cats.Boris.toys.1" : "mouse"
-        @linear_model.save null,
+        @linearModel.save null,
             fake : true
             wait : 30
             
@@ -181,11 +181,11 @@ describe "Backbone.Linear test api", ->
                 
                 
     it "send to server with `object`", (done)->
-        @linear_model.set
+        @linearModel.set
             "Cats.Boris.toys.0" : "ball"
             "Cats.Boris.toys.1" : "mouse"
-        @linear_model.flat_options = object : true
-        @linear_model.save null,
+        @linearModel.flatOptions = object : true
+        @linearModel.save null,
             fake : true
             wait : 30
             
@@ -201,15 +201,15 @@ describe "Backbone.Linear test api", ->
                 
                 
     it "`force_array` server repsonse", (done)->
-        @linear_model.set "id", "force_array"
-        @linear_model.flat_options =
-            force_array : [
+        @linearModel.set "id", "force_array"
+        @linearModel.flatOptions =
+            forceArray : [
                 "Cats.Boris.age",
                 "Cats.Boris.eyes",
                 "Cats.Boris.toys",
                 "Cats.Milla.toys"
             ]
-        @linear_model.fetch
+        @linearModel.fetch
             fake : true
             wait : 30
             
@@ -232,10 +232,10 @@ describe "Backbone.Linear test api", ->
 
 
     it "send to server without `overwrite`", (done)->
-        @linear_model.set
+        @linearModel.set
             "Cats.Boris.toys"   : "exists"
             "Cats.Boris.toys.0" : "ball"
-        @linear_model.save null,
+        @linearModel.save null,
             fake : true
             wait : true
 
@@ -246,11 +246,11 @@ describe "Backbone.Linear test api", ->
 
 
     it "send to server with `overwrite`", (done)->
-        @linear_model.set
+        @linearModel.set
             "Cats.Boris.toys"   : "exists"
             "Cats.Boris.toys.0" : "ball"
-        @linear_model.flat_options = overwrite : true
-        @linear_model.save null,
+        @linearModel.flatOptions = overwrite : true
+        @linearModel.save null,
             fake : true
             wait : true
 
