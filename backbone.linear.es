@@ -64,7 +64,7 @@ var factory = (_, Backbone) => {
         if (hasForceArray) {
           flatOptions.safe = true;
         }
-        result = this.constructor.flatten(parentCall, flatOptions);
+        result = LinearModel.flatten(parentCall, flatOptions);
         if (hasForceArray) {
           return transformToArray(result, flatOptions.forceArray);
         } else {
@@ -75,7 +75,7 @@ var factory = (_, Backbone) => {
       sync (method, model, options = {}) {
         if (method === "create" || method === "update" || method === "patch") {
           let opts = _.extend({}, options,
-            method === "patch" ? {attrs : this.constructor.unflatten(
+            method === "patch" ? {attrs : LinearModel.unflatten(
               options.attrs,
               _.result(this, "flatOptions")
             )} : {unflat : true}
@@ -88,7 +88,7 @@ var factory = (_, Backbone) => {
 
       toJSON (options = {}) {
         if (options.unflat) {
-          return this.constructor.unflatten(
+          return LinearModel.unflatten(
             super.toJSON(options),
             _.result(this, "flatOptions")
           );
