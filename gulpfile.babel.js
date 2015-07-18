@@ -2,9 +2,12 @@
      DEFINE-VARS
 ***************** */
 var gulp = require("gulp"),
+  babelify = require("babelify"),
+  browserify = require("browserify"),
   coffee = require("gulp-coffee"),
   coffeelint = require("gulp-coffeelint"),
   exec = require("child_process").exec,
+  fs = require("fs"),
   mocha = require("gulp-mocha"),
   mochaPhantomjs = require("gulp-mocha-phantomjs"),
   qunit = require("gulp-qunit"),
@@ -70,15 +73,6 @@ gulp.task("lint", () => {
 });
     
 gulp.task("compile", () => {
-  gulp.src("backbone.linear.coffee")
-  .pipe(sourcemaps.init())
-  .pipe(coffee())
-  .pipe(sourcemaps.write({
-    includeContent : false,
-    sourceRoot     : "./"
-  }))
-  .pipe(gulp.dest("./"));
-
   gulp.src("test/*.coffee")
   .pipe(sourcemaps.init())
   .pipe(coffee())
@@ -87,6 +81,15 @@ gulp.task("compile", () => {
     sourceRoot     : "../../test"
   }))
   .pipe(gulp.dest("tmp/test/"));
+
+  return browserify({debug : true, standalone : "Backbone.LinearModel"})
+    .transform(babelify)
+    .require("./backbone.linear.es", {entry : true})
+    .exclude("backbone")
+    .exclude("underscore")
+    .ignore("buffer")
+    .bundle()
+    .pipe(fs.createWriteStream("backbone.linear.js"));
 });
 
 
