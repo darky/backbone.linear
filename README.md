@@ -30,7 +30,7 @@ In `parse` method it transforms in:
 ```json
 {
     "Cats.Boris.age": 3,
-    "Cats.Boris.weight": 3,
+    "Cats.Boris.weight": 4,
     "Cats.Milla.age": 1,
     "Cats.Milla.weight": 2
 }
@@ -137,7 +137,7 @@ Transforms with preservation array structure:
 ```json
 {
     "Cats.Boris.age": 3,
-    "Cats.Boris.weight": 3,
+    "Cats.Boris.weight": 4,
     "Cats.Boris.toys": ["ball", "mouse"],
     "Cats.Milla.age": 1,
     "Cats.Milla.weight": 2
@@ -159,7 +159,7 @@ And server response will be with objectify arrays:
 ```json
 {
     "Cats.Boris.age": 3,
-    "Cats.Boris.weight": 3,
+    "Cats.Boris.weight": 4,
     "Cats.Boris.toys.0": "ball",
     "Cats.Boris.toys.1": "mouse",
     "Cats.Milla.age": 1,
@@ -182,7 +182,7 @@ When your client data:
 ```json
 {
     "Cats.Boris.age": 3,
-    "Cats.Boris.weight": 3,
+    "Cats.Boris.weight": 4,
     "Cats.Boris.toys.0": "ball",
     "Cats.Boris.toys.1": "mouse",
     "Cats.Milla.age": 1,
@@ -197,7 +197,7 @@ Will save on server, array not be created automatically:
     "Cats": {
         "Boris": {
             "age": 3,
-            "weight": 3,
+            "weight": 4,
             "toys": {
                 "0": "ball",
                 "1": "mouse"
@@ -218,7 +218,7 @@ Instead:
     "Cats": {
         "Boris": {
             "age": 3,
-            "weight": 3,
+            "weight": 4,
             "toys": [
                 "ball",
                 "mouse"
@@ -343,7 +343,7 @@ And server response:
     "Cats": {
         "Boris": {
             "age": 3,
-            "weight": 3,
+            "weight": 4,
             "toys": {
                 "item": "ball"
             },
@@ -365,7 +365,7 @@ Guarantees the creation of array:
 ```json
 {
     "Cats.Boris.age": [3],
-    "Cats.Boris.weight": 3,
+    "Cats.Boris.weight": 4,
     "Cats.Boris.toys": [{"item": "ball"}],
     "Cats.Boris.eyes": ["left_eye", "right_eye"],
     "Cats.Milla.age": 1,
