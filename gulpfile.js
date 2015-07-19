@@ -70,5 +70,5 @@ gulp.task("compile", function () {
      DEV
 ********* */
 gulp.task("dev", function () {
-  gulp.watch(["*.coffee", "test/*.coffee"], ["build"]);
+  gulp.watch(["src/*.js"], ["build"]);
 });
