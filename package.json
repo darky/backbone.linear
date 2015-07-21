@@ -29,6 +29,7 @@
     "browserify"             : "11.0.0",
     "gulp"                   : "3.9.0",
     "gulp-eslint"            : "0.15.0",
+    "gulp-istanbul"          : "0.10.0",
     "gulp-mocha"             : "2.1.3",
     "istanbul-combine"       : "0.3.0",
     "karma"                  : "0.13.2",

@@ -7,9 +7,10 @@
 ***************** */
 var gulp = require("gulp"),
   browserify = require("browserify"),
-  combineCoverage = require('istanbul-combine'),
+  combineCoverage = require("istanbul-combine"),
   eslint = require("gulp-eslint"),
   fs = require("fs"),
+  istanbul = require("gulp-istanbul"),
   KarmaServer = require("karma").Server,
   mocha = require("gulp-mocha"),
   runSequence = require("run-sequence");
@@ -30,11 +31,22 @@ gulp.task("build", ["lint", "compile"]);
 /* **********
      TEST
 ********** */
-gulp.task("test-flat", function () {
-  return gulp.src("flat-test/test.js").pipe(mocha({
-    reporter: "nyan",
-    ui: "tdd"
-  }));
+gulp.task("test-flat", function (cb) {
+  gulp.src("dist/backbone.linear.js")
+  .pipe(istanbul())
+  .pipe(istanbul.hookRequire())
+  .on("finish", function () {
+    gulp.src("flat-test/test.js")
+    .pipe(mocha({
+      reporter: "nyan",
+      ui: "tdd"
+    }))
+    .pipe(istanbul.writeReports({
+      dir: "coverage-flat",
+      reporters: ["json"]
+    }))
+    .on("end", cb);
+  });
 });
 
 gulp.task("test-backbone", function (cb) {
