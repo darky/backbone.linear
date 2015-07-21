@@ -24,12 +24,14 @@
     "split"
   ],
   "dependencies": {
-    "backbone"         : "1.2.1",
+    "backbone"   : "1.2.1",
+    "underscore" : "1.8.3"
+  },
+  "devDependencies": {
     "chai"             : "3.2.0",
     "jquery"           : "1.11.3",
     "jquery.ajax.fake" : "0.5.2",
-    "mocha"            : "2.2.5",
-    "underscore"       : "1.8.3"
+    "mocha"            : "2.2.5"
   },
   "license": "MIT"
 }
