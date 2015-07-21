@@ -44,6 +44,9 @@ gulp.task("test-backbone", function () {
 gulp.task("test-own", ["compile"], function (cb) {
   new KarmaServer({
     browsers: ["Firefox"],
+    coverageReporter: {
+      dir: "coverage-own"
+    },
     files: [
       "bower_components/underscore/underscore.js",
       "bower_components/jquery/dist/jquery.js",
@@ -53,6 +56,10 @@ gulp.task("test-own", ["compile"], function (cb) {
       "test/linear_model.js"
     ],
     frameworks: ["chai", "mocha"],
+    preprocessors: {
+      "dist/backbone.linear.js": "coverage"
+    },
+    reporters: ["progress", "coverage"],
     singleRun: true
   }, cb).start();
 });
