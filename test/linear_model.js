@@ -1,7 +1,7 @@
 /* eslint-env jquery, mocha */
 /* global Backbone, chai */
 
-describe("Backbone.Linear test api", function () {
+describe("Backbone.Linear test api", function () { // eslint-disable-line
   "use strict";
 
   /* ***************************
@@ -262,10 +262,13 @@ describe("Backbone.Linear test api", function () {
       success: function (model) {
         var attrs = model.attributes;
 
-        chai.expect(attrs["Cats.Boris.age"]).a("array");
-        chai.expect(attrs["Cats.Boris.eyes"]).a("array");
-        chai.expect(attrs["Cats.Boris.toys"]).a("array");
-        chai.expect(attrs["Cats.Milla.toys"]).a("array");
+        chai.expect([
+          attrs["Cats.Boris.age"],
+          attrs["Cats.Boris.eyes"],
+          attrs["Cats.Boris.toys"],
+          attrs["Cats.Milla.toys"]
+        ])
+        .all.a("array");
 
         chai.expect(attrs["Cats.Boris.age"]).have.members([3]);
         chai.expect(attrs["Cats.Boris.eyes"])

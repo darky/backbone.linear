@@ -55,6 +55,7 @@
 
     "max-depth": [2, 3],
     "max-len": [2, 90],
-    "max-params": [2, 3]
+    "max-params": [2, 3],
+    "max-statements": [2, 7]
   }
 }

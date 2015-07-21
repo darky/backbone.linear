@@ -136,11 +136,7 @@ var flat = require("flat"), globalVar = typeof global !== "undefined" ? global :
               return [key, val];
             }
           }).compact().object().value();
-          if (_.size(objInPath)) {
-            object[path] = [objInPath];
-          } else {
-            object[path] = [];
-          }
+          object[path] = _.size(objInPath) ? [objInPath] : [];
         }
       });
       return object;
