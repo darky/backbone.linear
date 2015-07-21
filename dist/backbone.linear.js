@@ -212,21 +212,13 @@ var flat = require("flat"), globalVar = typeof global !== "undefined" ? global :
            FLAT 1.6.0
       **************** */
       flatten: function (target, opts) {
-        if (opts == null) {
-          opts = {};
-        }
-        if (opts.safe == null) {
+        if (opts != null && opts.safe == null) {
           opts.safe = true;
         }
         return flat.flatten(target, opts);
       },
 
-      unflatten: function (target, opts) {
-        if (opts == null) {
-          opts = {};
-        }
-        return flat.unflatten(target, opts);
-      }
+      unflatten: flat.unflatten
 
     });
 
