@@ -11,7 +11,6 @@ var gulp = require("gulp"),
   fs = require("fs"),
   KarmaServer = require("karma").Server,
   mocha = require("gulp-mocha"),
-  qunit = require("gulp-qunit"),
   runSequence = require("run-sequence");
 
 
@@ -37,8 +36,34 @@ gulp.task("test-flat", function () {
   }));
 });
 
-gulp.task("test-backbone", function () {
-  return gulp.src("backbone-test/index.html").pipe(qunit());
+gulp.task("test-backbone", function (cb) {
+  new KarmaServer({
+    browsers: ["Firefox"],
+    coverageReporter: {
+      dir: "coverage-backbone"
+    },
+    files: [
+      "bower_components/underscore/underscore.js",
+      "bower_components/jquery/dist/jquery.js",
+      "bower_components/backbone/backbone.js",
+      "dist/backbone.linear.js",
+      "backbone-test/setup/dom-setup.js",
+      "backbone-test/setup/environment.js",
+      "backbone-test/noconflict.js",
+      "backbone-test/events.js",
+      "backbone-test/model.js",
+      "backbone-test/collection.js",
+      "backbone-test/router.js",
+      "backbone-test/view.js",
+      "backbone-test/sync.js"
+    ],
+    frameworks: ["qunit"],
+    preprocessors: {
+      "dist/backbone.linear.js": "coverage"
+    },
+    reporters: ["progress", "coverage"],
+    singleRun: true
+  }, cb).start();
 });
 
 gulp.task("test-own", ["compile"], function (cb) {
