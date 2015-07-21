@@ -7,6 +7,7 @@
 ***************** */
 var gulp = require("gulp"),
   browserify = require("browserify"),
+  combineCoverage = require('istanbul-combine'),
   eslint = require("gulp-eslint"),
   fs = require("fs"),
   KarmaServer = require("karma").Server,
@@ -40,7 +41,9 @@ gulp.task("test-backbone", function (cb) {
   new KarmaServer({
     browsers: ["Firefox"],
     coverageReporter: {
-      dir: "coverage-backbone"
+      dir: "coverage-backbone",
+      subdir: ".",
+      type: "json"
     },
     files: [
       "bower_components/underscore/underscore.js",
@@ -70,7 +73,9 @@ gulp.task("test-own", ["compile"], function (cb) {
   new KarmaServer({
     browsers: ["Firefox"],
     coverageReporter: {
-      dir: "coverage-own"
+      dir: "coverage-own",
+      subdir: ".",
+      type: "json"
     },
     files: [
       "bower_components/underscore/underscore.js",
@@ -87,6 +92,17 @@ gulp.task("test-own", ["compile"], function (cb) {
     reporters: ["progress", "coverage"],
     singleRun: true
   }, cb).start();
+});
+
+gulp.task("coverage", function () {
+  combineCoverage({
+    pattern: "coverage-*/coverage-final.json",
+    reporters: {
+      html: {
+        dir: "coverage"
+      }
+    }
+  });
 });
 
 
