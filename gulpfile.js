@@ -20,7 +20,7 @@ var gulp = require("gulp"),
     CONCAT-TASKS
 ***************** */
 gulp.task("default", function (cb) {
-  runSequence("build", "test", cb);
+  runSequence("build", "coverage", cb);
 });
 gulp.task("test", function (cb) {
   runSequence("test-backbone", "test-own", "test-flat", cb);
@@ -106,7 +106,7 @@ gulp.task("test-own", ["compile"], function (cb) {
   }, cb).start();
 });
 
-gulp.task("coverage", function () {
+gulp.task("coverage", ["test"], function () {
   combineCoverage({
     pattern: "coverage-*/coverage-final.json",
     reporters: {
