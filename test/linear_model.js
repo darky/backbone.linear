@@ -1,5 +1,5 @@
 /* eslint-env amd, jquery, mocha */
-/* global Backbone, chai */
+/* global Backbone, chai, requirejs */
 
 describe("Backbone.Linear test api", function () { // eslint-disable-line
   "use strict";
@@ -335,6 +335,14 @@ describe("Backbone.Linear test api", function () { // eslint-disable-line
   });
 
   it("check AMD", function (done) {
+    requirejs.config({
+      paths: {
+        "backbone": "base/bower_components/backbone/backbone",
+        "jquery": "base/bower_components/jquery/dist/jquery",
+        "underscore": "base/bower_components/underscore/underscore"
+      }
+    });
+
     require(["base/dist/backbone.linear.js"], function (LinearModelAMD) {
       chai.expect(LinearModelAMD)
       .equal(Backbone.LinearModel);

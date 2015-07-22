@@ -26,7 +26,7 @@
     "underscore" : "1.8.3"
   },
   "devDependencies": {
-    "browserify"             : "11.0.0",
+    "browserify"             : "git://github.com/cmaher/node-browserify.git#83c6d95c82822233684c37f289bb25370febf7c4",
     "gulp"                   : "3.9.0",
     "gulp-eslint"            : "0.15.0",
     "gulp-istanbul"          : "0.10.0",

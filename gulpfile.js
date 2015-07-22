@@ -130,12 +130,17 @@ gulp.task("lint", function () {
 });
 
 gulp.task("compile", function () {
-  return browserify({detectGlobals: false, standalone: "Backbone.LinearModel"})
-    .require("./src/backbone.linear.js", {entry: true})
-    .exclude("backbone")
-    .exclude("underscore")
-    .bundle()
-    .pipe(fs.createWriteStream("./dist/backbone.linear.js"));
+  return browserify({detectGlobals: false, standalone: {
+    amd: {
+      deps: ["backbone"]
+    },
+    name: "Backbone.LinearModel"
+  }})
+  .require("./src/backbone.linear.js", {entry: true})
+  .exclude("backbone")
+  .exclude("underscore")
+  .bundle()
+  .pipe(fs.createWriteStream("./dist/backbone.linear.js"));
 });
 
 
