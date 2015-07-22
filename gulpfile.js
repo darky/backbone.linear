@@ -7,6 +7,7 @@
 ***************** */
 var gulp = require("gulp"),
   browserify = require("browserify"),
+  CheckCoverage = require("./node_modules/istanbul/lib/command/check-coverage.js"),
   combineCoverage = require("istanbul-combine"),
   eslint = require("gulp-eslint"),
   fs = require("fs"),
@@ -107,14 +108,28 @@ gulp.task("test-own", ["compile"], function (cb) {
   }, cb).start();
 });
 
-gulp.task("coverage", ["test"], function () {
+gulp.task("coverage", ["test"], function (cb) {
   combineCoverage({
     pattern: "coverage-*/coverage-final.json",
     reporters: {
       html: {
         dir: "coverage"
+      },
+      json: {
+        dir: "coverage"
       }
     }
+  }).then(function () {
+    var checker = new CheckCoverage();
+    checker.run([
+      "--remain", "coverage/coverage-final.json",
+      "--statements", "95",
+      "--branches", "90",
+      "--functions", "100",
+      "--lines", "100"
+    ], function (err) {
+      cb(err);
+    });
   });
 });
 
