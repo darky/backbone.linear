@@ -116,13 +116,7 @@ var flat = require("flat"), globalVar = typeof global !== "undefined" ? global :
     return LinearModel;
   };
 
-if (typeof define === "function" && define.amd) {
-  define(["underscore", "backbone"], function (_, Backbone) {
-    globalVar.Backbone.LinearModel = factory(_, Backbone);
-  });
-} else if (module != null && module.exports) {
-  module.exports = factory(
-    globalVar._ || require("underscore"),
-    globalVar.Backbone || require("backbone")
-  );
-}
+module.exports = factory(
+  globalVar._ || require("underscore"),
+  globalVar.Backbone || require("backbone")
+);

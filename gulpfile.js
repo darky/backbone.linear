@@ -31,7 +31,7 @@ gulp.task("build", ["lint", "compile"]);
 /* **********
      TEST
 ********** */
-gulp.task("test-flat", function (cb) {
+gulp.task("test-flat", ["compile"], function (cb) {
   gulp.src("dist/backbone.linear.js")
   .pipe(istanbul())
   .pipe(istanbul.hookRequire())
@@ -49,7 +49,7 @@ gulp.task("test-flat", function (cb) {
   });
 });
 
-gulp.task("test-backbone", function (cb) {
+gulp.task("test-backbone", ["compile"], function (cb) {
   new KarmaServer({
     browsers: ["Firefox"],
     coverageReporter: {
@@ -95,6 +95,7 @@ gulp.task("test-own", ["compile"], function (cb) {
       "bower_components/jquery.ajax.fake/jquery.ajax.fake.js",
       "bower_components/backbone/backbone.js",
       "dist/backbone.linear.js",
+      "bower_components/requirejs/require.js",
       "test/linear_model.js"
     ],
     frameworks: ["chai", "mocha"],

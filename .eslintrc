@@ -34,7 +34,7 @@
     "indent": [2, 2],
     "lines-around-comment": [2, {"allowBlockStart": true, "beforeLineComment": true}],
     "linebreak-style": 2,
-    "max-nested-callbacks": [2, 2],
+    "max-nested-callbacks": [2, 3],
     "no-continue": 2,
     "no-inline-comments": 2,
     "no-lonely-if": 2,

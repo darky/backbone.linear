@@ -1,4 +1,4 @@
-/* eslint-env jquery, mocha */
+/* eslint-env amd, jquery, mocha */
 /* global Backbone, chai */
 
 describe("Backbone.Linear test api", function () { // eslint-disable-line
@@ -331,6 +331,14 @@ describe("Backbone.Linear test api", function () { // eslint-disable-line
         chai.expect(attrs["Cats.Milla"].weight).equal(2);
         done();
       }
+    });
+  });
+
+  it("check AMD", function (done) {
+    require(["base/dist/backbone.linear.js"], function (LinearModelAMD) {
+      chai.expect(LinearModelAMD)
+      .equal(Backbone.LinearModel);
+      done();
     });
   });
 });
