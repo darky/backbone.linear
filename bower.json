@@ -30,7 +30,7 @@
   "devDependencies": {
     "jquery"           : "1.11.3",
     "jquery.ajax.fake" : "0.5.2",
-    "requirejs"        : "2.1.19"
+    "requirejs"        : "2.1.20"
   },
   "license": "MIT"
 }
