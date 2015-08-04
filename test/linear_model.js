@@ -53,7 +53,7 @@ describe("Backbone.Linear test api", function () { // eslint-disable-line
             age: 3,
             weight: 3,
             toys: {
-              "item": "ball"
+              item: "ball"
             },
             eyes: [
               "left_eye",
@@ -337,9 +337,9 @@ describe("Backbone.Linear test api", function () { // eslint-disable-line
   it("check AMD", function (done) {
     requirejs.config({
       paths: {
-        "backbone": "base/bower_components/backbone/backbone",
-        "jquery": "base/bower_components/jquery/dist/jquery",
-        "underscore": "base/bower_components/underscore/underscore"
+        backbone: "base/bower_components/backbone/backbone",
+        jquery: "base/bower_components/jquery/dist/jquery",
+        underscore: "base/bower_components/underscore/underscore"
       }
     });
 
